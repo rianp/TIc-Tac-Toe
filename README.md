@@ -8,7 +8,7 @@
 
 1. Clone the repository or download the source code.
 2. Navigate to the directory containing the source code.
-3. Run the command python3 main.py`
+3. Run the command `python3 main.py`
 4. This will launch the Tic-Tac-Toe game in your terminal.
 
 ## Dependencies
