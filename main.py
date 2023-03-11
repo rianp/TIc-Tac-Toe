@@ -2,13 +2,13 @@
 This module contains the `main` function that creates any
 necessary objects and calls functions to execute the program's logic.
 """
-
-
 from console import *
+from board import *
 
 
 def main():
     """ Creates any necessary objects and calls functions to execute the program's logic. """
+    game = Board()
     Console.print_string("Hello friend, welcome to Tic-Tac-Toe!")
 
     message = """
@@ -28,6 +28,7 @@ def main():
 """
 
     Console.print_string(message)
+    Console.print_string(str(game))
 
 
 if __name__ == "__main__":
