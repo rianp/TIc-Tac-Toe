@@ -8,3 +8,10 @@ class Console:
     def print_string(string):
         """  Prints string. """
         print(string)
+
+    @staticmethod
+    def prompt_input(string):
+        """ Prompts user for a string input. """
+        result = input(string)
+        return result
+

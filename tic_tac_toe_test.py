@@ -10,12 +10,18 @@ class TestConsole(unittest.TestCase):
     """ A test suite for the Console class. """
 
     @patch('builtins.print')
-    def test_print_string_returns_expected_output(self, mock_print_string):
+    def test_print_string_returns_expected_output(self, mock_print):
         """ Test that print_string method of Console class returns the expected output. """
 
         expected_output = "Welcome to Tic-Tac-Toe."
-        Console().print_string("Welcome to Tic-Tac-Toe.")
-        mock_print_string.assert_called_with(expected_output)
+        Console.print_string("Welcome to Tic-Tac-Toe.")
+        mock_print.assert_called_with(expected_output)
+
+    @patch('builtins.input', return_value='1')
+    def test_prompt_input_returns_expected_output(self, mock_input):
+        """ Test that input_string method of Console class returns the expected output. """
+        user_input = Console.prompt_input("Enter a value: ")
+        self.assertEqual(user_input, '1')
 
 class TestBoard(unittest.TestCase):
     """ A test suite for the Board class. """

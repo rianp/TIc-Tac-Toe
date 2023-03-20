@@ -30,6 +30,10 @@ def main():
     Console.print_string(message)
     Console.print_string(str(game))
 
+    user_input = Console.prompt_input("Enter a value: ")
+    game.update_board("x", user_input)
+    Console.print_string(str(game))
+
 
 if __name__ == "__main__":
     main()
