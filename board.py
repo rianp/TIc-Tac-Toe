@@ -12,6 +12,14 @@ class Board:
         """ Gets the current state of the board. """
         return self._board
 
+    def update_board(self, player, cell_number):
+        """Updates the state of the board."""
+        for row in range(len(self._board)):
+            for col in range(len(self._board[row])):
+                if self._board[row][col] == int(cell_number):
+                    self._board[row][col] = player
+
+
     def __str__(self):
         """ Returns a formatted string representation of the board. """
         board_layout = "************************\n"\
