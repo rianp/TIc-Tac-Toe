@@ -27,7 +27,7 @@ class TestBoard(unittest.TestCase):
 
     def test_get_board_returns_the_board_dictionary(self):
         """ Test that get_board method of Board class returns true. """
-        expected_board = {1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6', 7: '7', 8: '8', 9: '9'}
+        expected_board = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
         self.assertEqual(Board().get_board(), expected_board)
 
     def test_board_str(self):

@@ -6,14 +6,14 @@ This module defines a `Board` class representing a board for the Tic-Tac-Toe gam
 class Board:
     """ A class representing a board for a Tic-Tac-Toe game. """
     def __init__(self):
-        self._board = {i: str(i) for i in range(1, 10)}
+        self._board = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
 
     def get_board(self):
-        """  Gets board. """
+        """ Gets the current state of the board. """
         return self._board
 
     def __str__(self):
-        """ Returns a formatted string version of a book object instance. """
+        """ Returns a formatted string representation of the board. """
         board_layout = "************************\n"\
                     "*    Current Board!    *\n"\
                     "************************\n"\
@@ -26,5 +26,5 @@ class Board:
                     "*                      *\n"\
                     "************************"
 
-        formatted_board = board_layout.format(*[self._board[num] for num in range(1, 10)])
+        formatted_board = board_layout.format(*[elem for row in self._board for elem in row])
         return formatted_board
