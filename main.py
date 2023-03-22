@@ -4,11 +4,16 @@ necessary objects and calls functions to execute the program's logic.
 """
 from console import *
 from board import *
+from score import *
+from players import *
+from turn import *
 
 
 def main():
     """ Creates any necessary objects and calls functions to execute the program's logic. """
     game = Board()
+    players = Players()
+    turn = Turn()
     Console.print_string("Hello friend, welcome to Tic-Tac-Toe!")
 
     message = """
@@ -26,14 +31,18 @@ def main():
 *   - all fields are taken                                   *
 *------------------------------------------------------------* 
 """
-
     Console.print_string(message)
-    Console.print_string(str(game))
 
-    user_input = Console.prompt_input("Enter a value: ")
-    game.update_board("x", user_input)
-    Console.print_string(str(game))
+    while True:
+        turn.change_turn(players)
+        Console.print_string(str(game))
 
+        user_input = Console.prompt_input(f'\nHi {turn.get_current_turn()[0]}! Enter a value please: ')
+        game.update_board(turn.get_current_turn()[1], user_input)
+        Console.print_string(str(game))
+
+        if Score().get_game_status(game.get_board()):
+            break
 
 if __name__ == "__main__":
     main()
