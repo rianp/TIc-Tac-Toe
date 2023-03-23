@@ -7,15 +7,14 @@ class Turn:
     """ A class representing a turn for a Tic-Tac-Toe game. """
 
     def __init__(self):
-        self._turn = ("", "")
+        self._turn = 1
 
-    def change_turn(self, players):
+    def change_turn(self):
         """ Changes player turn. """
-        players = players.get_players()
-        if self._turn[0] == players[0]:
-            self._turn = (players[1], "o")
+        if self._turn == 1:
+            self._turn = 2
         else:
-            self._turn = (players[0], "x")
+            self._turn = 1
         return
 
     def get_current_turn(self):
