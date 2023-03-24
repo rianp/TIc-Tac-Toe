@@ -15,10 +15,7 @@ class Turn:
             self._turn = 2
         else:
             self._turn = 1
-        return
 
     def get_current_turn(self):
         """ Returns the current player turn. """
         return self._turn
-
-

@@ -1,3 +1,7 @@
+"""
+This module defines a `Validation` class representing a validator for the Tic-Tac-Toe game.
+"""
+
 
 class Validation:
     """ Validates user inputs and search results. """
@@ -9,4 +13,3 @@ class Validation:
             if int(choice) in row:
                 return True
         return False
-

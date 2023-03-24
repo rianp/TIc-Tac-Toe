@@ -1,4 +1,4 @@
-""" This module contains a unit test suite for the application. """
+""" This module contains a unit test suites for the application. """
 
 import unittest
 from unittest.mock import patch
@@ -70,8 +70,8 @@ class TestConsole(unittest.TestCase):
     @patch('builtins.input', return_value='1')
     def test_prompt_input_returns_expected_output(self, mock_input):
         """ Test that prompt_input() returns the expected user input. """
-        user_input = self.console.prompt_input("Enter a value: ")
-        self.assertEqual(user_input, '1')
+        result = self.console.prompt_input("Enter a value: ")
+        self.assertEqual(result, '1')
 
 
 class TestBoard(unittest.TestCase):
@@ -135,7 +135,7 @@ class TestScore(unittest.TestCase):
 
     def setUp(self):
         """ Set up the test score. """
-        self.score = Score()
+        self.score = Score
 
     def test_get_game_status_returns_false_if_game_is_not_won(self):
         """Test that get_game_status() returns False if the game is not won."""
