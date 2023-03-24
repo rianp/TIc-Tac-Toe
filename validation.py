@@ -9,7 +9,4 @@ class Validation:
     @staticmethod
     def validate_selection(choice, board):
         """ Validates number selection. """
-        for row in board:
-            if int(choice) in row:
-                return True
-        return False
+        return any(int(choice) in row for row in board)

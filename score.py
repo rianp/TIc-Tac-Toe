@@ -12,18 +12,17 @@ class Score:
 
         for row in board:
             if all(elem == row[0] for elem in row):
-                return row[0]
+                return True
 
         for col in range(len(board)):
-            if len({row[col] for row in board}) == 1 and not isinstance(board[0][col], int):
-                return board[0][col]
+            if len({row[col] for row in board}) == 1:
+                return True
 
-        if len({board[i][i] for i in range(len(board))}) == 1 and not isinstance(board[0][0], int):
-            return board[0][0]
+        if len({board[i][i] for i in range(len(board))}) == 1:
+            return True
 
-        if len({board[i][len(board) - i - 1] for i in range(len(board))}) == 1 and not isinstance(
-                board[0][len(board) - 1], int):
-            return board[0][len(board) - 1]
+        if len({board[i][len(board) - i - 1] for i in range(len(board))}) == 1:
+            return True
 
         if all(not isinstance(cell, int) for row in board for cell in row):
             return 'Tie'

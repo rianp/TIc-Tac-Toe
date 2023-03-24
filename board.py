@@ -14,10 +14,10 @@ class Board:
 
     def update_board(self, player, cell_number):
         """Updates the state of the board."""
-        for row_index, row in enumerate(self._board):
-            for col_index, cell in enumerate(row):
+        for row_idx, row in enumerate(self._board):
+            for col_idx, cell in enumerate(row):
                 if cell == int(cell_number):
-                    self._board[row_index][col_index] = player
+                    self._board[row_idx][col_idx] = player
 
 
     def __str__(self):
