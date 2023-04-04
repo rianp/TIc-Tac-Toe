@@ -1,5 +1,5 @@
 import unittest
-from turn import *
+from turn import Turn
 
 
 class TestTurn(unittest.TestCase):

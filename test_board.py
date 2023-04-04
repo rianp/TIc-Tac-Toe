@@ -1,5 +1,5 @@
 import unittest
-from board import *
+from board import Board
 
 
 class TestBoard(unittest.TestCase):
@@ -15,7 +15,7 @@ class TestBoard(unittest.TestCase):
         self.assertEqual(result, expected_result)
 
     def test_board_str(self):
-        """ Test that the __str__() method returns the correct string representation of the board. """
+        """ Test __str__() method returns the correct string representation of the board. """
         expected_output = "************************\n" \
                           "*    Current Board!    *\n" \
                           "************************\n" \

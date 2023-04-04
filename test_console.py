@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch
-from console import *
+from console import Console
 
 
 class TestConsole(unittest.TestCase):
