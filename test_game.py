@@ -3,12 +3,11 @@ from game import Game
 
 
 class TestGame(unittest.TestCase):
-    """ A test suite for the Game class. """
     def setUp(self):
         """ Set up the test game. """
         self.game = Game()
 
-    def test_validate_user_input_valid(self):
+    def test_plays(self):
         """  Test that validate_user_input() returns the valid user input. """
         self.game._board.update_board('x', '1')
         result = self.game.validate_user_input('2')

@@ -12,26 +12,28 @@ class Game:
     def play(self):
         Console.print_string("Hello friend, welcome to Tic-Tac-Toe!")
         self.display_instructions()
+        self.play_round()
 
-        while True:
-            Console.print_string(str(self._board))
-            user_input = self.prompt_user_input()
+    def play_round(self):
+        Console.print_string(str(self._board))
+        user_input = self.prompt_user_input()
 
-            current_player = self._players[self._turn.get_current_turn() - 1]
-            self._board.update_board(current_player.get_mark(), user_input)
+        current_player = self._players[self._turn.get_current_turn() - 1]
+        self._board.update_board(current_player.get_mark(), user_input)
 
-            game_status = self.check_game_status()
+        game_status = self.check_game_status()
 
-            if game_status == "Tie":
-                Console.print_string("Eek! Looks like it's a tie friends. Goodbye.")
-                break
+        if game_status == "Tie":
+            Console.print_string("Eek! Looks like it's a tie friends. Goodbye.")
+            return
 
-            if game_status:
-                Console.print_string\
-                    (f"OMG! Congratulations Player {self._turn.get_current_turn()}, You won!")
-                break
+        if game_status:
+            Console.print_string\
+                (f"OMG! Congratulations Player {self._turn.get_current_turn()}, You won!")
+            return
 
-            self._turn.change_turn()
+        self._turn.change_turn()
+        self.play_round()
 
     @staticmethod
     def display_instructions():

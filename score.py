@@ -1,14 +1,7 @@
-"""
-This module defines a `Score` class representing a board for the Tic-Tac-Toe game.
-"""
-
-
 class Score:
-    """ A class representing the score for a Tic-Tac-Toe game. """
 
     @staticmethod
     def get_game_status(board):
-        """ Gets the current state of the game. """
 
         for row in board:
             if all(elem == row[0] for elem in row):
