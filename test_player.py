@@ -3,15 +3,15 @@ from player import Player
 
 
 class TestPlayer(unittest.TestCase):
-    """ A test suite for the Player class. """
-    def test_get_player_name_returns_players_name(self):
-        """ Test if get_player_name returns the player's name. """
+    def setUp(self):
+        self.player = Player("1", "x")
+
+    def test_has_name(self):
         expected_output = "1"
-        result = Player("1", "x").get_player_name()
+        result = self.player.get_name()
         self.assertEqual(result, expected_output)
 
-    def test_get_player_mark_returns_players_mark(self):
-        """ Test if get_player_mark returns the player's mark. """
+    def test_has_mark(self):
         expected_output = "x"
-        result = Player("1", "x").get_player_mark()
+        result = self.player.get_mark()
         self.assertEqual(result, expected_output)

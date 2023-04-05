@@ -1,10 +1,4 @@
-"""
-This module defines a `Board` class representing a board for the Tic-Tac-Toe game.
-"""
-
-
 class Board:
-    """ A class representing a board for a Tic-Tac-Toe game. """
     def __init__(self):
         self._board = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
 
@@ -16,7 +10,7 @@ class Board:
         """Updates the state of the board."""
         for row_idx, row in enumerate(self._board):
             for col_idx, cell in enumerate(row):
-                if cell == int(cell_number):
+                if cell == cell_number:
                     self._board[row_idx][col_idx] = player
 
 
