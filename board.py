@@ -3,11 +3,9 @@ class Board:
         self._board = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
 
     def get_board(self):
-        """ Gets the current state of the board. """
         return self._board
 
     def update_board(self, player, cell_number):
-        """Updates the state of the board."""
         for row_idx, row in enumerate(self._board):
             for col_idx, cell in enumerate(row):
                 if cell == cell_number:
@@ -15,7 +13,6 @@ class Board:
 
 
     def __str__(self):
-        """ Returns a formatted string representation of the board. """
         board_layout = "************************\n"\
                     "*    Current Board!    *\n"\
                     "************************\n"\

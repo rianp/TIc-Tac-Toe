@@ -2,7 +2,7 @@ import unittest
 from validation import Validator
 
 
-class TestValidation(unittest.TestCase):
+class TestUserInputValidation(unittest.TestCase):
 
     def setUp(self):
         self.test_board = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
