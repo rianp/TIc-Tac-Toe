@@ -1,9 +1,10 @@
-# PR Checklist
+## Pull Request Checklist
 
 - [ ] Do you have passing tests?
 - [ ] Did you run the linter?
 
-# Pull Request Description Checklist
+
+## Pull Request Description Checklist
 - [ ] Do you have a Description showing changes made?
 - [ ] summary or list of acceptance criteria
 - [ ] summary or list of what you updated & added
