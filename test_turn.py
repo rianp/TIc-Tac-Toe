@@ -4,7 +4,7 @@ from turn import Turn
 
 class TestTurn(unittest.TestCase):
 
-    def test_turn_changes_when_change_turn(self):
+    def test_turn_updates_to_next_turn_when_turn_changes(self):
         expected_output = 2
         turn = Turn()
         turn.change_turn()

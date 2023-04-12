@@ -11,7 +11,7 @@ class TestBoard(unittest.TestCase):
         result = self.test_board.get_board()
         self.assertEqual(result, expected_result)
 
-    def test_board_is_displayed_when_called(self):
+    def test_board_is_pretty_when_displayed(self):
         expected_output = "************************\n" \
                           "*    Current Board!    *\n" \
                           "************************\n" \
@@ -25,7 +25,7 @@ class TestBoard(unittest.TestCase):
                           "************************"
         self.assertEqual(str(self.test_board), expected_output)
 
-    def test_board_updates_when_player_makes_move(self):
+    def test_board_updates_correctly_with_players_move(self):
         self.test_board.update_board("x", 1)
         expected_output = [["x", 2, 3], [4, 5, 6], [7, 8, 9]]
         self.assertEqual(self.test_board.get_board(), expected_output)

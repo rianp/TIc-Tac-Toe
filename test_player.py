@@ -15,3 +15,5 @@ class TestPlayer(unittest.TestCase):
         expected_output = "o"
         result = player.get_mark()
         self.assertEqual(result, expected_output)
+
+    # need to write tests checking for no name or mark given
