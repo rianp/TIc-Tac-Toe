@@ -1,39 +1,42 @@
 from console import *
+from board import *
 from score import *
+from player import *
+from turn import *
+from validation import *
 
 
 class Game:
-    def __init__(self, board, turn, validation, players):
-        self._board = board
-        self._players = players
-        self._turn = turn
-        self._validation = validation
+    def __init__(self):
+        self._board = Board()
+        self._player_1 = Player("1", "x")
+        self._player_2 = Player("2", "o")
+        self._players = (self._player_1, self._player_2)
+        self._turn = Turn()
 
     def play(self):
         Console.print_string("Hello friend, welcome to Tic-Tac-Toe!")
         self.display_instructions()
-        self.play_round()
 
-    def play_round(self):
-        Console.print_string(str(self._board))
-        user_input = self.prompt_user_input()
+        while True:
+            Console.print_string(str(self._board))
+            user_input = self.prompt_user_input()
 
-        current_player = self._players[self._turn.get_current_turn() - 1]
-        self._board.update_board(current_player.get_mark(), user_input)
+            current_player = self._players[self._turn.get_current_turn() - 1]
+            self._board.update_board(current_player.get_mark(), user_input)
 
-        game_status = self.check_game_status()
+            game_status = self.check_game_status()
 
-        if game_status == "Tie":
-            Console.print_string("Eek! Looks like it's a tie friends. Goodbye.")
-            return
+            if game_status == "Tie":
+                Console.print_string("Eek! Looks like it's a tie friends. Goodbye.")
+                break
 
-        if game_status:
-            Console.print_string\
-                (f"OMG! Congratulations Player {self._turn.get_current_turn()}, You won!")
-            return
+            if game_status:
+                Console.print_string\
+                    (f"OMG! Congratulations Player {self._turn.get_current_turn()}, You won!")
+                break
 
-        self._turn.change_turn()
-        self.play_round()
+            self._turn.change_turn()
 
     @staticmethod
     def display_instructions():
@@ -57,10 +60,11 @@ class Game:
     def prompt_user_input(self):
         user_input = Console.prompt_input\
             (f'\nHi Player {self._turn.get_current_turn()}! Enter a value please: ')
-        validated_input = self.validate_user_input(user_input, self._validation)
+        validated_input = self.validate_user_input(user_input)
         return validated_input
 
-    def validate_user_input(self, user_input, validator):
+    def validate_user_input(self, user_input):
+        validator = Validator()
         while not validator.validate_selection(user_input, self._board.get_board()):
             Console.print_string("Oops! This is an invalid menu choice. ")
             user_input = Console.prompt_input("\nLet's try that again! Enter a value please: ")

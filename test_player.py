@@ -3,15 +3,15 @@ from player import Player
 
 
 class TestPlayer(unittest.TestCase):
-    def setUp(self):
-        self.player = Player("1", "x")
 
-    def test_has_name(self):
+    def test_has_name_when_name_is_given(self):
+        player = Player("1", "x")
         expected_output = "1"
-        result = self.player.get_name()
+        result = player.get_name()
         self.assertEqual(result, expected_output)
 
-    def test_has_mark(self):
-        expected_output = "x"
-        result = self.player.get_mark()
+    def test_has_mark_when_mark_is_given(self):
+        player = Player("2", "o")
+        expected_output = "o"
+        result = player.get_mark()
         self.assertEqual(result, expected_output)
