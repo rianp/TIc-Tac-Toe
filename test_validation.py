@@ -10,25 +10,29 @@ class TestValidator(unittest.TestCase):
 
     def test_is_on_board(self):
         test_board = [[1, 2, 3], ['x', 5, 6], [7, 8, 9]]
-        with self.subTest('returns true when selection is still on board'):
+        with self.subTest('returns true when selection is available'):
             result = self.validator.is_on_board(1, test_board)
             self.assertTrue(result)
 
-        with self.subTest('returns false when selection is not on board'):
+        with self.subTest('returns false when selection is not available'):
             result = self.validator.is_on_board(4, test_board)
             self.assertFalse(result)
 
     def test_is_in_range(self):
-        with self.subTest('returns true when selection is in selection range'):
+        with self.subTest('returns true when selection is at minimum selection range'):
             result = self.validator.is_in_range(1, self.test_board)
             self.assertTrue(result)
 
-        with self.subTest('returns true when selection is in selection range'):
+        with self.subTest('returns true when selection is at maximum selection range'):
             result = self.validator.is_in_range(9, self.test_board)
             self.assertTrue(result)
 
-        with self.subTest('returns false when selection is out of selection range'):
+        with self.subTest('returns false when selection is higher than selection range'):
             result = self.validator.is_in_range(10, self.test_board)
+            self.assertFalse(result)
+
+        with self.subTest('returns false when selection is lower than selection range'):
+            result = self.validator.is_in_range(0, self.test_board)
             self.assertFalse(result)
 
     def test_is_valid_integer(self):
