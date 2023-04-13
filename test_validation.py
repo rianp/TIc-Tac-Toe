@@ -19,20 +19,21 @@ class TestValidator(unittest.TestCase):
             self.assertFalse(result)
 
     def test_is_in_range(self):
+        board_range = range(1, len(self.test_board) * len(self.test_board) + 1)
         with self.subTest('returns true when selection is at minimum selection range'):
-            result = self.validator.is_in_range(1, self.test_board)
+            result = self.validator.is_in_range(1, board_range)
             self.assertTrue(result)
 
         with self.subTest('returns true when selection is at maximum selection range'):
-            result = self.validator.is_in_range(9, self.test_board)
+            result = self.validator.is_in_range(9, board_range)
             self.assertTrue(result)
 
-        with self.subTest('returns false when selection is higher than selection range'):
-            result = self.validator.is_in_range(10, self.test_board)
+        with self.subTest('returns false when selection is lower than selection range'):
+            result = self.validator.is_in_range(0, board_range)
             self.assertFalse(result)
 
-        with self.subTest('returns false when selection is lower than selection range'):
-            result = self.validator.is_in_range(0, self.test_board)
+        with self.subTest('returns false when selection is higher than selection range'):
+            result = self.validator.is_in_range(10, board_range)
             self.assertFalse(result)
 
     def test_is_valid_integer(self):
