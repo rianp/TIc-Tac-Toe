@@ -1,9 +1,8 @@
 class Console:
-    @staticmethod
-    def print_string(string):
+
+    def print_string(self, string):
         print(string)
 
-    @staticmethod
-    def prompt_input(string):
+    def prompt_input(self, string):
         result = input(string)
-        return int(result)
+        return result
