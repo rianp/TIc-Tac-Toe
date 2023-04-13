@@ -1,7 +1,3 @@
-"""
-This module contains the `game` function that creates any
-necessary objects and calls functions to execute the program's logic.
-"""
 from console import *
 from board import *
 from score import *
@@ -11,7 +7,6 @@ from validation import *
 
 
 class Game:
-    """ Responsible for managing the game flow. """
     def __init__(self):
         self._board = Board()
         self._player_1 = Player("1", "x")
@@ -20,7 +15,6 @@ class Game:
         self._turn = Turn()
 
     def play(self):
-        """ Creates any necessary objects and calls functions to execute the program's logic. """
         Console.print_string("Hello friend, welcome to Tic-Tac-Toe!")
         self.display_instructions()
 
@@ -29,7 +23,7 @@ class Game:
             user_input = self.prompt_user_input()
 
             current_player = self._players[self._turn.get_current_turn() - 1]
-            self._board.update_board(current_player.get_player_mark(), user_input)
+            self._board.update_board(current_player.get_mark(), user_input)
 
             game_status = self.check_game_status()
 
@@ -46,7 +40,6 @@ class Game:
 
     @staticmethod
     def display_instructions():
-        """ Displays instructions of the game. """
         message = """
 *------------------------------------------------------------*
 * Here are the instructions to the game!                     *
@@ -65,20 +58,17 @@ class Game:
         Console.print_string(message)
 
     def prompt_user_input(self):
-        """ Prompts user for input. """
         user_input = Console.prompt_input\
             (f'\nHi Player {self._turn.get_current_turn()}! Enter a value please: ')
         validated_input = self.validate_user_input(user_input)
         return validated_input
 
     def validate_user_input(self, user_input):
-        """ Validates user input. """
-        validator = Validation()
+        validator = Validator()
         while not validator.validate_selection(user_input, self._board.get_board()):
             Console.print_string("Oops! This is an invalid menu choice. ")
             user_input = Console.prompt_input("\nLet's try that again! Enter a value please: ")
         return user_input
 
     def check_game_status(self):
-        """ Checks game status. """
         return Score.get_game_status(self._board.get_board())
