@@ -69,7 +69,7 @@ class Game:
             if not validator.is_valid_integer(user_input):
                 Console().print_string("Eek! That's not even a number! ")
             elif not validator.is_in_range(int(user_input), self._board.get_board_range()):
-                Console().print_string("Whoa friend! This is outa bounds! ")
+                Console().print_string("Whoa friend! This is outta bounds! ")
             elif not validator.is_on_board(int(user_input), self._board.get_board()):
                 Console().print_string("Rats! Your opponent already snagged this one! ")
             else:

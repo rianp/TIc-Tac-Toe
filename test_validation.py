@@ -48,3 +48,11 @@ class TestValidator(unittest.TestCase):
         with self.subTest('returns false when input is a space'):
             result = self.validator.is_valid_integer(" ")
             self.assertFalse(result)
+
+        with self.subTest('returns false when input has leading whitespace'):
+            result = self.validator.is_there_whitespace(" 1")
+            self.assertFalse(result)
+
+        with self.subTest('returns false when input has trailing whitespace'):
+            result = self.validator.is_there_whitespace("1 ")
+            self.assertFalse(result)
