@@ -26,6 +26,13 @@ class TestBoard(unittest.TestCase):
                               "************************"
             self.assertEqual(str(self.test_board), expected_output)
 
+    def test_get_board_range(self):
+        with self.subTest('has a range from lowest to highest cell number'):
+            board_length = len(self.test_board.get_board())
+            board_range = range(1, board_length * board_length)
+            expected_output = range(1, 9)
+            self.assertEqual(board_range, expected_output)
+
     def test_update_board(self):
         with self.subTest('board updates correctly with players move'):
             self.test_board.update_board("x", 1)

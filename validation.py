@@ -4,8 +4,8 @@ class Validator:
         return any(choice in row for row in board)
 
     @staticmethod
-    def is_in_range(choice, board):
-        return choice in range(1, len(board) * len(board) + 1)
+    def is_in_range(choice, range):
+        return choice in range
 
     @staticmethod
     def is_valid_integer(string):
