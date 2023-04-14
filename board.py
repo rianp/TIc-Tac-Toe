@@ -5,6 +5,10 @@ class Board:
     def get_board(self):
         return self._board
 
+    def get_board_range(self):
+        board_range = range(1, len(self._board) * len(self._board))
+        return board_range
+
     def update_board(self, player, cell_number):
         for row_idx, row in enumerate(self._board):
             for col_idx, cell in enumerate(row):

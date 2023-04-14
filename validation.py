@@ -1,7 +1,20 @@
 class Validator:
     @staticmethod
-    def validate_selection(choice, board):
-        if not isinstance(choice, int):
+    def is_on_board(choice, board):
+        return any(choice in row for row in board)
+
+    @staticmethod
+    def is_in_range(choice, range):
+        return choice in range
+
+    @staticmethod
+    def is_valid_integer(string):
+        try:
+            int(string)
+            return True
+        except ValueError:
             return False
 
-        return any(choice in row for row in board)
+    @staticmethod
+    def is_there_whitespace(string):
+        return len(string.strip()) == len(string)
