@@ -18,3 +18,21 @@ class Validator:
     @staticmethod
     def is_there_whitespace(string):
         return len(string.strip()) == len(string)
+
+    def validate_move(self, user_input, board, console):
+
+        if not self.is_valid_integer(user_input):
+            console.print_string("Eek! That's not even a number! ")
+            return False
+
+        move = int(user_input)
+
+        if not self.is_in_range(move, board.get_board_range()):
+            console.print_string("Whoa friend! This is outta bounds! ")
+            return False
+
+        if not self.is_on_board(move, board.get_board()):
+            console.print_string("Rats! Your someone already snagged this one! ")
+            return False
+
+        return True

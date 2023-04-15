@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import Mock
 from validation import Validator
 
 
@@ -6,7 +7,7 @@ class TestValidator(unittest.TestCase):
 
     def setUp(self):
         self.test_board = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-        self.validator = Validator
+        self.validator = Validator()
 
     def test_is_on_board(self):
         test_board = [[1, 2, 3], ['x', 5, 6], [7, 8, 9]]
@@ -56,3 +57,27 @@ class TestValidator(unittest.TestCase):
         with self.subTest('returns false when input has trailing whitespace'):
             result = self.validator.is_there_whitespace("1 ")
             self.assertFalse(result)
+
+    def test_validate_move_invalid_integer(self):
+        user_input = "hello"
+        board = Mock()
+        console = Mock()
+        self.assertFalse(self.validator.validate_move(user_input, board, console))
+        console.print_string.assert_called_once_with("Eek! That's not even a number! ")
+
+    def test_validate_move_out_of_bounds(self):
+        user_input = "10"
+        board = Mock()
+        board.get_board_range.return_value = range(1, 10)
+        console = Mock()
+        self.assertFalse(self.validator.validate_move(user_input, board, console))
+        console.print_string.assert_called_once_with("Whoa friend! This is outta bounds! ")
+
+    def test_validate_move_already_taken(self):
+        user_input = "4"
+        board = Mock()
+        board.get_board_range.return_value = range(1, 10)
+        board.get_board.return_value = [[1, 2, 3], ['x', 5, 6], [7, 8, 9]]
+        console = Mock()
+        self.assertFalse(self.validator.validate_move(user_input, board, console))
+        console.print_string.assert_called_once_with("Rats! Your someone already snagged this one! ")
