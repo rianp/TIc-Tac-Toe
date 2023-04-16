@@ -58,26 +58,29 @@ class TestValidator(unittest.TestCase):
             result = self.validator.is_there_whitespace("1 ")
             self.assertFalse(result)
 
-    def test_validate_move_invalid_integer(self):
+    def test_when_players_move_is_not_an_integer(self):
         user_input = "hello"
         board = Mock()
         console = Mock()
-        self.assertFalse(self.validator.validate_move(user_input, board, console))
-        console.print_string.assert_called_once_with("Eek! That's not even a number! ")
+        with self.subTest("should tell the players it's not an integer"):
+            self.assertFalse(self.validator.validate_move(user_input, board, console))
+            console.print_string.assert_called_once_with("Eek! That's not even a number! ")
 
-    def test_validate_move_out_of_bounds(self):
+    def test_when_players_move_is_out_of_bounds(self):
         user_input = "10"
         board = Mock()
         board.get_board_range.return_value = range(1, 10)
         console = Mock()
-        self.assertFalse(self.validator.validate_move(user_input, board, console))
-        console.print_string.assert_called_once_with("Whoa friend! This is outta bounds! ")
+        with self.subTest("should tell the player their move is out of bounds"):
+            self.assertFalse(self.validator.validate_move(user_input, board, console))
+            console.print_string.assert_called_once_with("Whoa friend! This is outta bounds! ")
 
-    def test_validate_move_already_taken(self):
+    def test_when_players_move_is_already_taken(self):
         user_input = "4"
         board = Mock()
         board.get_board_range.return_value = range(1, 10)
         board.get_board.return_value = [[1, 2, 3], ['x', 5, 6], [7, 8, 9]]
         console = Mock()
-        self.assertFalse(self.validator.validate_move(user_input, board, console))
-        console.print_string.assert_called_once_with("Rats! Your someone already snagged this one! ")
+        with self.subTest("should tell the player their move has already been played"):
+            self.assertFalse(self.validator.validate_move(user_input, board, console))
+            console.print_string.assert_called_once_with("Rats! Someone already snagged this one! ")

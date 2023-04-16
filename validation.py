@@ -32,7 +32,7 @@ class Validator:
             return False
 
         if not self.is_on_board(move, board.get_board()):
-            console.print_string("Rats! Your someone already snagged this one! ")
+            console.print_string("Rats! Someone already snagged this one! ")
             return False
 
         return True
