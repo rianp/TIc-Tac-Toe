@@ -12,6 +12,14 @@ class TestGame(unittest.TestCase):
         self.validator = MagicMock()
         self.game = Game()
 
+
+    def test_play_round_tie(self):
+        self.board.get_board_state.return_value = ['x', 'o', 'x', 'o', 'x', 'o', 'o', 'x', 'o']
+        expected_output = "Eek! Looks like it's a tie friends. Goodbye."
+        self.console.prompt_input.return_value = '7'
+        result = self.game.play_round(self.board, self.players, self.console, self.validator)
+        self.assertEqual(result, expected_output)
+
     def test_play_round(self):
         self.game.is_game_over = MagicMock(return_value=False)
         self.game.get_move = MagicMock(return_value=1)

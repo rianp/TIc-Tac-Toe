@@ -19,7 +19,8 @@ def main():
     start.start_game(console)
 
     game = Game()
-    game.play_round(board, players, console, validator)
+    end_game_message = game.play_round(board, players, console, validator)
+    console.print_string(end_game_message)
 
 
 if __name__ == "__main__":
