@@ -2,8 +2,9 @@ class Game:
 
     def play_round(self, board, players, console, validator):
         game_status = self.is_game_over(board)
+        self.display_game_status(game_status, players, console, board)
 
-        if not self.display_game_status(game_status, players, console, board):
+        if game_status:
             return
 
         current_player = players.get_current_player().get_name()
@@ -20,11 +21,12 @@ class Game:
 
     def get_move(self, board, console, string, validator):
         user_move = console.prompt_input(string)
+        is_valid, error_message = validator.validate_move(user_move, board)
 
-        if validator.validate_move(user_move, board, console):
+        if is_valid:
             return int(user_move)
         else:
-            try_again = "\nIt's okay though! We'll try again! Enter a value please: "
+            try_again = f"{error_message}\nIt's okay though! We'll try again! Enter a value please: "
             return self.get_move(board, console, try_again, validator)
 
     def display_game_status(self, game_status, players, console, board):

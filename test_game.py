@@ -12,6 +12,18 @@ class TestGame(unittest.TestCase):
         self.validator = MagicMock()
         self.game = Game()
 
+    def test_play_round(self):
+        self.game.is_game_over = MagicMock(return_value=False)
+        self.game.get_move = MagicMock(return_value=1)
+        self.game.update_game = MagicMock()
+
+        self.players.get_current_player.get_name.return_value = '1'
+
+        self.game.play_round(self.board, self.players, self.console, self.validator)
+
+        self.game.display_game_status.assert_called_with(False, self.players, self.console, self.board)
+
+
     def test_when_game_updates(self):
         player_mark = 'x'
         position = 1
@@ -27,14 +39,18 @@ class TestGame(unittest.TestCase):
     def test_when_getting_a_move(self):
         board = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
         self.console.prompt_input.return_value = '4'
+        string = "Enter a value please: "
 
-        move = self.game.get_move(board, self.console, "Enter a value please: ", self.validator)
+        mock_validate_move = MagicMock(return_value=(True, None))
+        self.validator.validate_move = mock_validate_move
 
-        with self.subTest('should ask player for move'):
+        move = self.game.get_move(board, self.console, string, self.validator)
+
+        with self.subTest('should prompt user for move'):
             self.console.prompt_input.assert_called_once_with("Enter a value please: ")
-        with self.subTest("should check to see if the user's move is valid"):
-            self.validator.validate_move.assert_called_once_with('4', board, self.console)
-        with self.subTest("should return an integer"):
+        with self.subTest('should validate the move'):
+            mock_validate_move.assert_called_once_with('4', board)
+        with self.subTest("should return the move if it's a valid choice"):
             self.assertEqual(move, 4)
 
     def test_when_displaying_a_tied_game(self):

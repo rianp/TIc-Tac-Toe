@@ -5,10 +5,11 @@ class GameStart:
         self.display_instructions(console)
 
     def greeting(self, console):
-        console.print_string("\n<--!!!Hello friend, welcome to Tic-Tac-Toe!!!-->")
+        console.print_string("\n                         ᕙ(Ⓘ‿‿Ⓘ)ᕗ"
+                             "\n   <----** Hello friend! Welcome to Tic-Tac-Toe!!! **----> ")
 
     def display_instructions(self, console):
-        message = """
+        message = """    
 *------------------------------------------------------------*
 *           Here are the instructions to the game!           *
 *------------------------------------------------------------*
