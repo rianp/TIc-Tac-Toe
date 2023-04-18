@@ -16,10 +16,12 @@ def main():
     console = Console()
 
     start = GameStart()
-    start.start_game(console)
+    intro_message = start.start_game()
+    console.print_string(intro_message)
 
     game = Game()
     end_game_message = game.play_round(board, players, console, validator)
+
     console.print_string(end_game_message)
 
 

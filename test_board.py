@@ -1,4 +1,5 @@
 import unittest
+
 from board import Board
 
 
@@ -39,34 +40,33 @@ class TestBoard(unittest.TestCase):
             expected_output = [["x", 2, 3], [4, 5, 6], [7, 8, 9]]
             self.assertEqual(self.test_board.get_board(), expected_output)
 
-    def test_when_getting_the_state_of_the_board(self):
+    def test_get_board_state(self):
         with self.subTest('game is not finished if there are no winners'):
             self.test_board._board = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-            result = self.test_board.get_board_state()
+            result = self.test_board.get_board_winner_status()
             self.assertFalse(result)
 
         with self.subTest('should check the state of the rows'):
             self.test_board._board = [['x', 'x', 'x'], [4, 5, 6], [7, 8, 9]]
-            result = self.test_board.get_board_state()
+            result = self.test_board.get_board_winner_status()
             self.assertTrue(result)
 
         with self.subTest('should check the state of the columns'):
             self.test_board._board = [['x', 2, 3], ['x', 5, 6], ['x', 8, 9]]
-            result = self.test_board.get_board_state()
+            result = self.test_board.get_board_winner_status()
             self.assertTrue(result)
 
         with self.subTest('should check diagonal descending'):
             self.test_board._board = [['o', 2, 3], [4, 'o', 6], [7, 8, 'o']]
-            result = self.test_board.get_board_state()
+            result = self.test_board.get_board_winner_status()
             self.assertTrue(result)
 
             with self.subTest('should check diagonal ascending'):
                 self.test_board._board = [[1, 2, 'o'], [4, 'o', 6], ['o', 8, 9]]
-                result = self.test_board.get_board_state()
+                result = self.test_board.get_board_winner_status()
                 self.assertTrue(result)
 
         with self.subTest('round is finished when tied'):
             self.test_board._board = [['x', 'o', 'x'], ['o', 'o', 'x'], ['o', 'x', 'o']]
-            result = self.test_board.get_board_state()
+            result = self.test_board.get_board_winner_status()
             self.assertIsNone(result)
-

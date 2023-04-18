@@ -9,7 +9,7 @@ class Board:
         board_range = range(1, len(self._board) * len(self._board) + 1)
         return board_range
 
-    def get_board_state(self):
+    def get_board_winner_status(self):
         board = self._board
 
         for row in board:

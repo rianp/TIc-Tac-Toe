@@ -1,14 +1,15 @@
 class GameStart:
 
-    def start_game(self, console):
-        self.greeting(console)
-        self.display_instructions(console)
+    def start_game(self):
+        greeting = self.greeting()
+        instructions = self.instructions()
+        return greeting + instructions
 
-    def greeting(self, console):
-        console.print_string("\n                         ᕙ(Ⓘ‿‿Ⓘ)ᕗ"
-                             "\n   <----** Hello friend! Welcome to Tic-Tac-Toe!!! **----> ")
+    def greeting(self):
+        return "\n                         ᕙ(Ⓘ‿‿Ⓘ)ᕗ"\
+               "\n   <----** Hello friend! Welcome to Tic-Tac-Toe!!! **----> "
 
-    def display_instructions(self, console):
+    def instructions(self):
         message = """    
 *------------------------------------------------------------*
 *           Here are the instructions to the game!           *
@@ -24,4 +25,4 @@ class GameStart:
 *   - all fields are taken                                   *
 *------------------------------------------------------------* 
         """
-        console.print_string(message)
+        return message

@@ -90,7 +90,3 @@ class TestValidator(unittest.TestCase):
         with self.subTest("should tell the player their move has already been played"):
             self.assertFalse(result[0])
             self.assertEqual(result[1], "Rats! Someone already snagged this one! ")
-
-
-
-

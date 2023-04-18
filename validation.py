@@ -4,8 +4,8 @@ class Validator:
         return any(choice in row for row in board)
 
     @staticmethod
-    def is_in_range(choice, range):
-        return choice in range
+    def is_in_range(choice, board_range):
+        return choice in board_range
 
     @staticmethod
     def is_valid_integer(string):
@@ -20,7 +20,6 @@ class Validator:
         return len(string.strip()) == len(string)
 
     def validate_move(self, user_input, board):
-
         if not self.is_valid_integer(user_input):
             return False, "Eek! That's not even a number! "
 

@@ -1,46 +1,64 @@
 import unittest
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, Mock
+
 from game import Game
 
 
 class TestGame(unittest.TestCase):
 
     def setUp(self):
-        self.players = MagicMock()
+        player_1 = ("1", "x")
+        player_2 = ("2", "o")
+        self.players = MagicMock(return_value=(player_1, player_2))
         self.board = MagicMock()
         self.console = MagicMock()
         self.validator = MagicMock()
         self.game = Game()
 
-
-    def test_play_round_tie(self):
-        self.board.get_board_state.return_value = ['x', 'o', 'x', 'o', 'x', 'o', 'o', 'x', 'o']
-        expected_output = "Eek! Looks like it's a tie friends. Goodbye."
-        self.console.prompt_input.return_value = '7'
-        result = self.game.play_round(self.board, self.players, self.console, self.validator)
-        self.assertEqual(result, expected_output)
-
     def test_play_round(self):
-        self.game.is_game_over = MagicMock(return_value=False)
-        self.game.get_move = MagicMock(return_value=1)
-        self.game.update_game = MagicMock()
+        current_player = self.players.get_current_player.return_value\
+            = MagicMock(name='1', mark='x')
 
-        self.players.get_current_player.get_name.return_value = '1'
+        with self.subTest("display current state of the game"):
+            self.game.get_move = MagicMock()
+            self.game.play_round(self.board, self.players, self.console, self.validator)
+            self.console.print_string.assert_called_once_with(str(self.board))
 
-        self.game.play_round(self.board, self.players, self.console, self.validator)
+        with self.subTest("get current player's move to update the board"):
+            self.game.get_move = MagicMock()
+            self.game.play_round(self.board, self.players, self.console, self.validator)
 
-        self.game.display_game_status.assert_called_with(False, self.players, self.console, self.board)
+            self.game.get_move.assert_called()
 
+        with self.subTest("update the board with the player's move "):
+            self.game.update_game = MagicMock()
+            self.game.play_round(self.board, self.players, self.console, self.validator)
+
+            self.game.update_game.assert_called()
+
+        with self.subTest("return game over message when game is over"):
+            current_player.get_name.return_value = '1'
+            self.board.get_board_winner_status.return_value = True
+            expected_output = "OMG! Congratulations Player 1, You won!"
+
+            result = self.game.play_round(self.board, self.players, self.console, self.validator)
+
+            self.assertEqual(result, expected_output)
+
+        with self.subTest("play next round if game is not over"):
+            self.board.get_board_winner_status = Mock(side_effect=[False, False, False, True])
+
+            self.game.play_round(self.board, self.players, self.console, self.validator)
+            self.assertEqual(self.board.get_board_winner_status.call_count, 4)
 
     def test_when_game_updates(self):
         player_mark = 'x'
-        position = 1
-        self.players.get_current_player.return_value.get_mark.return_value = player_mark
+        move = 1
 
-        self.game.update_game(self.players, position, self.board)
+        self.game.update_game(self.board, player_mark, move, self.players)
 
         with self.subTest('should place players mark on board'):
-            self.board.update_board.assert_called_once_with(player_mark, position)
+            self.board.update_board.assert_called_once_with(player_mark, move)
         with self.subTest('should change player turn'):
             self.players.change_turn.assert_called_once()
 
@@ -61,37 +79,31 @@ class TestGame(unittest.TestCase):
         with self.subTest("should return the move if it's a valid choice"):
             self.assertEqual(move, 4)
 
-    def test_when_displaying_a_tied_game(self):
-        board = [['o', 'x', 'o'], ['x', 'x', 'o'], ['x', 'o', 'x']]
-        game_status = None
-        result = self.game.display_game_status(game_status, self.players, self.console, board)
+    def test_get_message(self):
+        player_mock = MagicMock()
+        player_mock.get_name.return_value = '1'
+        self.players.get_current_player.return_value = player_mock
 
-        with self.subTest('should tell the players the game is tied'):
-            self.console.print_string.assert_called_with("Eek! Looks like it's a tie friends. Goodbye.")
-        with self.subTest('should exit game'):
-            self.assertFalse(result)
+        with self.subTest('should return tie message when the game is tied'):
+            expected_output = "Eek! Looks like it's a tie friends. Goodbye."
+            actual_output = self.game.get_message(None, self.players)
+            self.assertEqual(actual_output, expected_output)
 
-    def test_when_displaying_a_won_game(self):
-        board = [['o', 'o', 'o'], [4, 5, 6], [7, 8, 9]]
-        self.players.get_current_player.return_value.get_name.return_value = '1'
-        game_status = True
+        with self.subTest('should return winner message when the game is won'):
+            expected_output = "OMG! Congratulations Player 1, You won!"
+            player_mock.get_name.return_value = '1'
+            actual_output = self.game.get_message(True, self.players)
+            self.assertEqual(actual_output, expected_output)
 
-        result = self.game.display_game_status(game_status, self.players, self.console, board)
+    def test_get_winner(self):
+        player_mock = MagicMock()
+        player_mock.get_name.return_value = '1'
+        expected_output = '1'
+        self.players.get_current_player.return_value = player_mock
 
-        with self.subTest('should congratulate the winner'):
-            self.console.print_string.assert_called_with("OMG! Congratulations Player 1, You won!")
-        with self.subTest('should exit game'):
-            self.assertFalse(result)
+        actual_output = self.game.get_winner(self.players)
 
-    def test_when_displaying_an_unfinished_game(self):
-        board = [['x', 2, 'o'], [4, 5, 6], [7, 8, 9]]
-        game_status = False
-
-        result = self.game.display_game_status(game_status, self.players, self.console, board)
-
-        with self.subTest('should show the players the current state of the game'):
-            self.console.print_string.assert_called_with(str(board))
-        with self.subTest('should not exit game'):
-            self.assertTrue(result)
-
-
+        with self.subTest('should change player turn'):
+            self.players.change_turn.assert_called_once()
+        with self.subTest('should return winner'):
+            self.assertEqual(actual_output, expected_output)

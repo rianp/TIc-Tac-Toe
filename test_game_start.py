@@ -10,25 +10,24 @@ class TestGame(unittest.TestCase):
 
     def test_when_game_starts(self):
         self.game.greeting = MagicMock()
-        self.game.display_instructions = MagicMock()
+        self.game.instructions = MagicMock()
 
-        self.game.start_game(self.console)
+        self.game.start_game()
 
         with self.subTest('should display greeting'):
-            self.game.greeting.assert_called_once_with(self.console)
+            self.game.greeting.assert_called_once()
 
         with self.subTest('should display instructions'):
-            self.game.display_instructions.assert_called_once_with(self.console)
+            self.game.instructions.assert_called_once()
 
     def test_greeting(self):
-        self.game.greeting(self.console)
-        self.console.print_string.assert_called_with(
-            "\n<--!!!Hello friend, welcome to Tic-Tac-Toe!!!-->"
-        )
+        expected_output = "\n                         ᕙ(Ⓘ‿‿Ⓘ)ᕗ"\
+               "\n   <----** Hello friend! Welcome to Tic-Tac-Toe!!! **----> "
+        actual_output = self.game.greeting()
+        self.assertEqual(actual_output, expected_output)
 
     def test_display_instructions(self):
-        self.game.display_instructions(self.console)
-        message = """
+        expected_message = """    
 *------------------------------------------------------------*
 *           Here are the instructions to the game!           *
 *------------------------------------------------------------*
@@ -43,4 +42,7 @@ class TestGame(unittest.TestCase):
 *   - all fields are taken                                   *
 *------------------------------------------------------------* 
         """
-        self.console.print_string.assert_called_with(message)
+        self.game.instructions()
+        actual_message = self.game.instructions()
+
+        self.assertEqual(actual_message, expected_message)
