@@ -55,15 +55,16 @@ class Game:
         board = self.board
         validator = self.validator
 
-        while True:
-            if not validator.is_valid_integer(user_input):
-                return "Eek! That's not even a number! "
-            elif not validator.is_in_range(int(user_input), board.get_board_range()):
-                return "Whoa friend! This is outta bounds! "
-            elif not validator.is_on_board(int(user_input), board.get_board()):
-                return "Rats! Someone already snagged this one! "
-            else:
-                return int(user_input)
+        if not validator.is_valid_integer(user_input):
+            return "Eek! That's not even a number! "
+
+        if not validator.is_in_range(int(user_input), board.get_board_range()):
+            return "Whoa friend! This is outta bounds! "
+
+        if not validator.is_on_board(int(user_input), board.get_board()):
+            return "Rats! Someone already snagged this one! "
+
+        return int(user_input)
 
     def get_message(self, is_game_over):
         if is_game_over is WinnerStatus.DRAW:

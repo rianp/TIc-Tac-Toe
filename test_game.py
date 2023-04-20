@@ -59,9 +59,9 @@ class TestGame(unittest.TestCase):
 
         with self.subTest("play next round if game is not over"):
             self.board.get_board_winner_status = \
-                Mock(side_effect=[WinnerStatus.ONGOING, WinnerStatus.ONGOING, WinnerStatus.ONGOING, WinnerStatus.DRAW])
+                Mock(side_effect=[WinnerStatus.ONGOING, WinnerStatus.ONGOING, WinnerStatus.DRAW])
             self.game.play_round()
-            self.assertEqual(self.board.get_board_winner_status.call_count, 4)
+            self.assertEqual(self.board.get_board_winner_status.call_count, 3)
 
     def test_when_game_updates(self):
         player_mark = 'x'
@@ -89,7 +89,9 @@ class TestGame(unittest.TestCase):
             self.assertEqual(move, 4)
 
     def test_validate_move(self):
-        with self.subTest("should notify player their input isn't an integer if they entered a non-integer"):
+        with self.subTest(
+                "should notify player their input isn't an integer if they entered a non-integer"
+        ):
             user_input = "cookie"
             self.validator.is_valid_integer = Mock(return_value=False)
 
@@ -97,7 +99,9 @@ class TestGame(unittest.TestCase):
 
             self.assertEqual(result, "Eek! That's not even a number! ")
 
-        with self.subTest("should notify player of out-of-bounds move if move is out of selectable range"):
+        with self.subTest(
+                "should notify player of out-of-bounds move if move is out of selectable range"
+        ):
             user_input = "10"
             self.validator.is_valid_integer = Mock(return_value=True)
             self.validator.is_in_range = Mock(return_value=False)
@@ -106,7 +110,9 @@ class TestGame(unittest.TestCase):
 
             self.assertEqual(result, "Whoa friend! This is outta bounds! ")
 
-        with self.subTest("should notify player of unavailable move when move has already been played"):
+        with self.subTest(
+                "should notify player of unavailable move when move has already been played"
+        ):
             user_input = "4"
             self.validator.is_valid_integer = Mock(return_value=True)
             self.validator.is_in_range = Mock(return_value=True)

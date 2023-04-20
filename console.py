@@ -13,7 +13,8 @@ class Console:
                                  )
 
     def print_instructions(self):
-        return self.print_string("""    
+        return self.print_string(
+            """    
 *------------------------------------------------------------*
 *           Here are the instructions to the game!           *
 *------------------------------------------------------------*
@@ -28,4 +29,5 @@ class Console:
 *   - all fields are taken                                   *
 *------------------------------------------------------------* 
         """
+
                                  )
