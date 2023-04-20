@@ -4,7 +4,7 @@ from player import Player
 from validation import Validator
 from players import Players
 from console import Console
-from game_start import GameStart
+
 
 
 def main():
@@ -15,12 +15,11 @@ def main():
     validator = Validator()
     console = Console()
 
-    start = GameStart()
-    intro_message = start.start_game()
-    console.print_string(intro_message)
+    console.print_greeting()
+    console.print_instructions()
 
-    game = Game()
-    end_game_message = game.play_round(board, players, console, validator)
+    game = Game(board, players, console, validator)
+    end_game_message = game.play_round()
 
     console.print_string(end_game_message)
 

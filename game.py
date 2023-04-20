@@ -1,6 +1,19 @@
+from board import WinnerStatus
+
+
 class Game:
 
-    def play_round(self, board, players, console, validator):
+    def __init__(self, board, players, console, validator):
+        self.board = board
+        self.players = players
+        self.console = console
+        self.validator = validator
+
+    def play_round(self):
+        board = self.board
+        players = self.players
+        console = self.console
+
         console.print_string(str(board))
 
         current_player = players.get_current_player()
@@ -8,43 +21,60 @@ class Game:
         current_mark = current_player.get_mark()
 
         move_prompt = f'\nHi Player {name}! Enter a value please: '
-        move = self.get_move(board, console, move_prompt, validator)
+        move = self.get_move(move_prompt)
 
-        self.update_game(board, current_mark, move, players)
+        self.update_game(current_mark, move)
 
         is_game_over = board.get_board_winner_status()
-        if is_game_over:
-            return self.get_message(is_game_over, players)
+        if is_game_over is not WinnerStatus.ONGOING:
+            return self.get_message(is_game_over)
 
-        return self.play_round(board, players, console, validator)
+        return self.play_round()
 
-    def update_game(self, board, current_mark, move, players):
+    def update_game(self, current_mark, move):
+        board = self.board
+        players = self.players
+
         board.update_board(current_mark, move)
         players.change_turn()
 
-    def get_move(self, board, console, string, validator):
-        user_move = console.prompt_input(string)
-        is_valid, error_message = validator.validate_move(user_move, board)
+    def get_move(self, string):
+        console = self.console
 
-        if is_valid:
+        user_move = console.prompt_input(string)
+        is_valid = self.validate_move(user_move)
+
+        if is_valid == int(user_move):
             return int(user_move)
 
-        try_again = f"{error_message}" \
+        try_again = f"{is_valid}" \
                     f"\nIt's okay though! We'll try again! Enter a value please: "
-        return self.get_move(board, console, try_again, validator)
+        return self.get_move(try_again)
 
-    def get_message(self, is_game_over, players):
+    def validate_move(self, user_input):
+        board = self.board
+        validator = self.validator
 
-        if is_game_over is None:
+        while True:
+            if not validator.is_valid_integer(user_input):
+                return "Eek! That's not even a number! "
+            elif not validator.is_in_range(int(user_input), board.get_board_range()):
+                return "Whoa friend! This is outta bounds! "
+            elif not validator.is_on_board(int(user_input), board.get_board()):
+                return "Rats! Someone already snagged this one! "
+            else:
+                return int(user_input)
+
+    def get_message(self, is_game_over):
+        if is_game_over is WinnerStatus.DRAW:
             return "Eek! Looks like it's a tie friends. Goodbye."
 
-        if is_game_over:
-            winner = self.get_winner(players)
-            return f"OMG! Congratulations Player {winner}, You won!"
+        winner = self.get_winner()
+        return f"OMG! Congratulations Player {winner}, You won!"
 
-        return ""
+    def get_winner(self):
+        players = self.players
 
-    def get_winner(self, players):
         players.change_turn()
         winner = players.get_current_player().get_name()
         return winner

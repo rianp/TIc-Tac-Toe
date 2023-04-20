@@ -1,3 +1,13 @@
+from enum import Enum
+
+
+class WinnerStatus(Enum):
+    WINNER_X = 1
+    WINNER_O = 2
+    DRAW = 3
+    ONGOING = 4
+
+
 class Board:
     def __init__(self):
         self._board = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
@@ -11,25 +21,26 @@ class Board:
 
     def get_board_winner_status(self):
         board = self._board
+        size = len(board)
 
         for row in board:
-            if all(elem == row[0] for elem in row):
-                return True
+            if all(cell == row[0] for cell in row):
+                return WinnerStatus.WINNER_X if row[0] == 'x' else WinnerStatus.WINNER_O
 
-        for col in range(len(board)):
-            if len({row[col] for row in board}) == 1:
-                return True
+        for col in range(size):
+            if all(board[row][col] == board[0][col] for row in range(size)):
+                return WinnerStatus.WINNER_X if board[0][col] == 'x' else WinnerStatus.WINNER_O
 
-        if len({board[i][i] for i in range(len(board))}) == 1:
-            return True
+        if all(board[i][i] == board[0][0] for i in range(size)):
+            return WinnerStatus.WINNER_X if board[0][0] == 'x' else WinnerStatus.WINNER_O
 
-        if len({board[i][len(board) - i - 1] for i in range(len(board))}) == 1:
-            return True
+        if all(board[i][size - i - 1] == board[0][size - 1] for i in range(size)):
+            return WinnerStatus.WINNER_X if board[0][size - 1] == 'x' else WinnerStatus.WINNER_O
 
-        if all(not isinstance(cell, int) for row in board for cell in row):
-            return None
+        if all(isinstance(cell, str) for row in board for cell in row):
+            return WinnerStatus.DRAW
 
-        return False
+        return WinnerStatus.ONGOING
 
     def update_board(self, player, cell_number):
         for row_idx, row in enumerate(self._board):

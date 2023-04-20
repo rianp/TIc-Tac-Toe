@@ -18,3 +18,15 @@ class TestConsole(unittest.TestCase):
         with patch('builtins.input', return_value='pizza'):
             result = self.console.prompt_input("Enter a string: ")
             self.assertEqual(result, "pizza")
+
+    def test_print_greeting(self):
+        with patch('sys.stdout', new=StringIO()) as fake_output:
+            self.console.print_greeting()
+            self.assertIn("(Ⓘ‿‿Ⓘ)", fake_output.getvalue())
+            self.assertIn("Welcome to Tic-Tac-Toe!!!", fake_output.getvalue())
+
+    def test_print_instructions(self):
+        with patch('sys.stdout', new=StringIO()) as fake_output:
+            self.console.print_instructions()
+            self.assertIn("Here are the instructions to the game!", fake_output.getvalue())
+            self.assertIn("all fields are taken", fake_output.getvalue())

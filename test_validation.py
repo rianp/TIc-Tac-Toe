@@ -57,36 +57,3 @@ class TestValidator(unittest.TestCase):
         with self.subTest('returns false when input has trailing whitespace'):
             result = self.validator.is_there_whitespace("1 ")
             self.assertFalse(result)
-
-    def test_when_players_move_is_not_an_integer(self):
-        user_input = "cookie"
-        board = Mock()
-
-        result = self.validator.validate_move(user_input, board)
-
-        with self.subTest("should tell the players it's not an integer"):
-            self.assertFalse(result[0])
-            self.assertEqual(result[1], "Eek! That's not even a number! ")
-
-    def test_when_players_move_is_out_of_bounds(self):
-        user_input = "10"
-        board = Mock()
-        board.get_board_range.return_value = range(1, 10)
-
-        result = self.validator.validate_move(user_input, board)
-
-        with self.subTest("should tell the player their move is out of bounds"):
-            self.assertFalse(result[0])
-            self.assertEqual(result[1], "Whoa friend! This is outta bounds! ")
-
-    def test_when_players_move_is_already_taken(self):
-        user_input = "4"
-        board = Mock()
-        board.get_board_range.return_value = range(1, 10)
-        board.get_board.return_value = [[1, 2, 3], ['x', 5, 6], [7, 8, 9]]
-
-        result = self.validator.validate_move(user_input, board)
-
-        with self.subTest("should tell the player their move has already been played"):
-            self.assertFalse(result[0])
-            self.assertEqual(result[1], "Rats! Someone already snagged this one! ")
