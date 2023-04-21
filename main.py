@@ -17,8 +17,9 @@ def main():
 
     console.print_greeting()
     console.print_instructions()
-    board_size = console.prompt_input("Let's build a board! Pick an odd number from 3 to 5: ")
-    board.build_board(board_size)
+    board_size = console.select_board_size(
+        "Let's build a board! Pick an odd number from 3 to 5: ", validator)
+    # board.build_board(board_size)
 
     game = Game(board, players, console, validator)
     end_game_message = game.play_round()

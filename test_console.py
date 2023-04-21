@@ -31,36 +31,18 @@ class TestConsole(unittest.TestCase):
             self.console.print_instructions()
             self.assertIn("Here are the instructions to the game!", fake_output.getvalue())
             self.assertIn("all fields are taken", fake_output.getvalue())
-            
+
     def test_select_board_size(self):
-        with self.subTest(
-                "should notify player their input isn't an integer if they entered a non-integer"
-        ):
-            user_input = "cookie"
-            self.validator.is_valid_integer = Mock(return_value=False)
+        prompt = "enter a number: "
+        self.console.prompt_input = Mock(return_value='3')
+        is_valid = Mock(return_value=3)
+        self.validator.validate_size = is_valid
 
-            result = self.console.validate_move(user_input)
+        size = self.console.select_board_size(prompt, self.validator)
 
-            self.assertEqual(result, "Eek! That's not even a number! ")
-
-        with self.subTest(
-                "should notify player of out-of-range size if board size is out of selectable range"
-        ):
-            user_input = "10"
-            self.validator.is_valid_integer = Mock(return_value=True)
-            self.validator.is_in_range = Mock(return_value=False)
-
-            result = self.console.validate_move(user_input)
-
-            self.assertEqual(result, "Whoa friend! This is outta bounds! ")
-            
-        with self.subTest(
-                "should notify player of even size if chosen size isn't odd"
-        ):
-            user_input = "4"
-            self.validator.is_valid_integer = Mock(return_value=True)
-            self.validator.is_in_range = Mock(return_value=True)
-
-            result = self.console.validate_move(user_input)
-
-            self.assertEqual(result, "Whoa friend! This is outta bounds! ")
+        with self.subTest('should prompt user for board size'):
+            self.console.prompt_input.assert_called_once_with(prompt)
+        with self.subTest('should validate the size'):
+            self.validator.validate_size.assert_called_once_with('3')
+        with self.subTest("should return the size if it's a valid choice"):
+            self.assertEqual(size, 3)
