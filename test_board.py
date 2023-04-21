@@ -7,10 +7,6 @@ class TestBoard(unittest.TestCase):
     def setUp(self):
         self.test_board = Board()
 
-    def test_build_board(self):
-        with self.subTest('should build a board with the width matching the inputed number'):
-
-
     def test_when_board_is_called(self):
         with self.subTest('should have cell numbers from 1 to 9'):
             expected_result = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]

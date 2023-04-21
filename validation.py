@@ -42,4 +42,3 @@ class ValidationResult:
     def __init__(self, boolean, string):
         self.is_valid = boolean
         self.message = string
-
