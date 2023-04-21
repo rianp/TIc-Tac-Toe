@@ -25,14 +25,21 @@ class Validator:
 
     def validate_size(self, size):
         if not self.is_valid_integer(size):
-            return "Eek! That's not even a number! "
+            return ValidationResult(False, "Eek! That's not even a number! ")
 
         size = int(size)
 
         if not self.is_in_range(size, range(3, 6)):
-            return "Whoa friend! This is outta bounds! "
+            return ValidationResult(False, "Whoa friend! This is outta bounds! ")
 
         if not self.is_odd(size):
-            return "Ummm. This isn't odd friend!"
+            return ValidationResult(False, "Ummm. This isn't odd friend!")
 
-        return size
+        return ValidationResult(True, "")
+
+
+class ValidationResult:
+    def __init__(self, boolean, string):
+        self.is_valid = boolean
+        self.message = string
+

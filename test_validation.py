@@ -62,16 +62,17 @@ class TestValidator(unittest.TestCase):
             result = self.validator.is_odd(2)
             self.assertFalse(result)
 
-    def test_select_board_size(self):
+    def test_validate_size(self):
         with self.subTest(
-                "should notify player their input isn't an integer if they entered a non-integer"
+                "should notify player their result is invalid if they entered a non-integer"
         ):
             size = "cookie"
             self.validator.is_valid_integer.return_value = False
 
             result = self.validator.validate_size(size)
 
-            self.assertEqual(result, "Eek! That's not even a number! ")
+            self.assertEqual(result.is_valid, False)
+            self.assertEqual(result.message, "Eek! That's not even a number! ")
 
         with self.subTest(
                 "should notify player of out-of-range size if board size is out of selectable range"
@@ -82,10 +83,11 @@ class TestValidator(unittest.TestCase):
 
             result = self.validator.validate_size(size)
 
-            self.assertEqual(result, "Whoa friend! This is outta bounds! ")
+            self.assertEqual(result.is_valid, False)
+            self.assertEqual(result.message, "Whoa friend! This is outta bounds! ")
 
         with self.subTest(
-                "should notify player of even integer if chosen size is even"
+                "should notify player result is invalid if chosen size is even"
         ):
             size = "4"
             self.validator.is_valid_integer.return_value = True
@@ -94,10 +96,11 @@ class TestValidator(unittest.TestCase):
 
             result = self.validator.validate_size(size)
 
-            self.assertEqual(result, "Ummm. This isn't odd friend!")
+            self.assertEqual(result.is_valid, False)
+            self.assertEqual(result.message, "Ummm. This isn't odd friend!")
 
         with self.subTest(
-                "should return integer if chosen size is a valid odd integer"
+                "should indicate result is valid if chosen size is a valid odd integer"
         ):
             size = "3"
             self.validator.is_valid_integer.return_value = True
@@ -106,4 +109,5 @@ class TestValidator(unittest.TestCase):
 
             result = self.validator.validate_size(size)
 
-            self.assertEqual(result, 3)
+            self.assertEqual(result.is_valid, True)
+            self.assertEqual(result.message, "")
