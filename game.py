@@ -10,13 +10,9 @@ class Game:
         self.validator = validator
 
     def play_round(self):
-        board = self.board
-        players = self.players
-        console = self.console
+        self.console.print_string(str(self.board))
 
-        console.print_string(str(board))
-
-        current_player = players.get_current_player()
+        current_player = self.players.get_current_player()
         name = current_player.get_name()
         current_mark = current_player.get_mark()
 
@@ -25,23 +21,18 @@ class Game:
 
         self.update_game(current_mark, move)
 
-        is_game_over = board.get_board_winner_status()
+        is_game_over = self.board.get_board_winner_status()
         if is_game_over is not WinnerStatus.ONGOING:
             return self.get_message(is_game_over)
 
         return self.play_round()
 
     def update_game(self, current_mark, move):
-        board = self.board
-        players = self.players
-
-        board.update_board(current_mark, move)
-        players.change_turn()
+        self.board.update_board(current_mark, move)
+        self.players.change_turn()
 
     def get_move(self, string):
-        console = self.console
-
-        user_move = console.prompt_input(string)
+        user_move = self.console.prompt_input(string)
         is_valid = self.validate_move(user_move)
 
         if is_valid == int(user_move):
@@ -52,16 +43,13 @@ class Game:
         return self.get_move(try_again)
 
     def validate_move(self, user_input):
-        board = self.board
-        validator = self.validator
-
-        if not validator.is_valid_integer(user_input):
+        if not self.validator.is_valid_integer(user_input):
             return "Eek! That's not even a number! "
 
-        if not validator.is_in_range(int(user_input), board.get_board_range()):
+        if not self.validator.is_in_range(int(user_input), self.board.get_board_range()):
             return "Whoa friend! This is outta bounds! "
 
-        if not validator.is_on_board(int(user_input), board.get_board()):
+        if not self.validator.is_on_board(int(user_input), self.board.get_board()):
             return "Rats! Someone already snagged this one! "
 
         return int(user_input)
@@ -74,8 +62,6 @@ class Game:
         return f"OMG! Congratulations Player {winner}, You won!"
 
     def get_winner(self):
-        players = self.players
-
-        players.change_turn()
-        winner = players.get_current_player().get_name()
+        self.players.change_turn()
+        winner = self.players.get_current_player().get_name()
         return winner

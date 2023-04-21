@@ -14,7 +14,3 @@ class Validator:
             return True
         except ValueError:
             return False
-
-    @staticmethod
-    def is_there_whitespace(string):
-        return len(string.strip()) == len(string)
