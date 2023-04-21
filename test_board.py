@@ -7,10 +7,6 @@ class TestBoard(unittest.TestCase):
     def setUp(self):
         self.test_board = Board()
 
-    def test_build_board(self):
-        with self.subTest('should build a board with the width matching the inputed number'):
-
-
     def test_when_board_is_called(self):
         with self.subTest('should have cell numbers from 1 to 9'):
             expected_result = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
@@ -74,3 +70,26 @@ class TestBoard(unittest.TestCase):
             self.test_board._board = [['x', 'o', 'x'], ['o', 'o', 'x'], ['o', 'x', 'o']]
             result = self.test_board.get_board_winner_status()
             self.assertEqual(result, WinnerStatus.DRAW)
+
+
+class TestCustomBoard(unittest.TestCase):
+    def test_build_board(self):
+        with self.subTest('should build a 5x5 board matching the input number'):
+            self.test_board = Board(5)
+
+            result = self.test_board.get_size()
+            self.assertEqual(result, 25)
+
+        with self.subTest('should build a board with the width matching the input number'):
+            self.test_board = Board(7)
+
+            result = self.test_board.get_size()
+            self.assertEqual(result, 49)
+
+        with self.subTest('should build a board with the width matching the input number'):
+            self.test_board = Board(5)
+            expected_board = [[1, 2, 3, 4, 5], [6, 7, 8, 9, 10],
+                              [11, 12, 13, 14, 15], [16, 17, 18, 19, 20], [21, 22, 23, 24, 25]]
+
+            result = self.test_board.get_board()
+            self.assertEqual(result, expected_board)

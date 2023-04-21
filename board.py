@@ -9,8 +9,25 @@ class WinnerStatus(Enum):
 
 
 class Board:
-    def __init__(self):
-        self._board = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+    def __init__(self, board_size=3):
+        self._board_size = board_size
+        self._board = self.build_board()
+
+    def build_board(self):
+        board = []
+        count = 1
+
+        for i in range(self._board_size):
+            row = []
+            for j in range(self._board_size):
+                row.append(count)
+                count += 1
+            board.append(row)
+
+        return board
+
+    def get_size(self):
+        return self._board_size * self._board_size
 
     def get_board(self):
         return self._board

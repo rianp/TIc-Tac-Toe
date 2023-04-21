@@ -21,7 +21,7 @@ class Validator:
 
     @staticmethod
     def is_odd(number):
-        return number % 3 == 0
+        return number % 2 != 0
 
     def validate_size(self, size):
         if not self.is_valid_integer(size):
