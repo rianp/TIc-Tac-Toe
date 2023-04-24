@@ -56,3 +56,58 @@ class TestValidator(unittest.TestCase):
         with self.subTest('ignores trailing whitespace'):
             result = self.validator.is_valid_integer("1 ")
             self.assertTrue(result)
+
+    def test_is_odd(self):
+        with self.subTest('returns false when input is an even number'):
+            result = self.validator.is_odd(2)
+            self.assertFalse(result)
+
+    def test_validate_size(self):
+        with self.subTest(
+                "should notify player their result is invalid if they entered a non-integer"
+        ):
+            size = "cookie"
+            self.validator.is_valid_integer.return_value = False
+
+            result = self.validator.validate_size(size)
+
+            self.assertEqual(result.is_valid, False)
+            self.assertEqual(result.message, "Eek! That's not even a number! ")
+
+        with self.subTest(
+                "should notify player of out-of-range size if board size is out of selectable range"
+        ):
+            size = "10"
+            self.validator.is_valid_integer.return_value = True
+            self.validator.is_in_range.return_value = False
+
+            result = self.validator.validate_size(size)
+
+            self.assertEqual(result.is_valid, False)
+            self.assertEqual(result.message, "Whoa friend! This is outta bounds! ")
+
+        with self.subTest(
+                "should notify player result is invalid if chosen size is even"
+        ):
+            size = "4"
+            self.validator.is_valid_integer.return_value = True
+            self.validator.is_in_range.return_value = True
+            self.validator.is_odd.return_value = False
+
+            result = self.validator.validate_size(size)
+
+            self.assertEqual(result.is_valid, False)
+            self.assertEqual(result.message, "Ummm. This isn't odd friend!")
+
+        with self.subTest(
+                "should indicate result is valid if chosen size is a valid odd integer"
+        ):
+            size = "3"
+            self.validator.is_valid_integer.return_value = True
+            self.validator.is_in_range.return_value = True
+            self.validator.is_odd.return_value = True
+
+            result = self.validator.validate_size(size)
+
+            self.assertEqual(result.is_valid, True)
+            self.assertEqual(result.message, "")

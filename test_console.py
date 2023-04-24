@@ -1,6 +1,6 @@
 import unittest
 from io import StringIO
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 from console import Console
 
 
@@ -8,6 +8,7 @@ class TestConsole(unittest.TestCase):
 
     def setUp(self):
         self.console = Console()
+        self.validator = Mock()
 
     def test_print_string(self):
         with patch('sys.stdout', new=StringIO()) as fake_out:
@@ -30,3 +31,20 @@ class TestConsole(unittest.TestCase):
             self.console.print_instructions()
             self.assertIn("Here are the instructions to the game!", fake_output.getvalue())
             self.assertIn("all fields are taken", fake_output.getvalue())
+
+    def test_select_board_size(self):
+        prompt = "enter a number: "
+        self.console.prompt_input = Mock(return_value='3')
+        validated_size_mock = Mock()
+        validated_size_mock.is_valid = True
+        validated_size_mock.message = "wrong num"
+        self.validator.validate_size = Mock(return_value=validated_size_mock)
+
+        size = self.console.select_board_size(prompt, self.validator)
+
+        with self.subTest('should prompt user for board size'):
+            self.console.prompt_input.assert_called_once_with(prompt)
+        with self.subTest('should validate the size'):
+            self.validator.validate_size.assert_called_once_with('3')
+        with self.subTest("should return the size if it's a valid choice"):
+            self.assertEqual(size, 3)

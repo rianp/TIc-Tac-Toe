@@ -29,5 +29,16 @@ class Console:
 *   - all fields are taken                                   *
 *------------------------------------------------------------* 
         """
+                               )
 
-                                 )
+    def select_board_size(self, prompt, validator):
+        size = self.prompt_input(prompt)
+        validated_size = validator.validate_size(size)
+
+        if validated_size.is_valid is True:
+            return int(size)
+
+        try_again = f"{validated_size.message}" \
+                    f"\nIt's okay though! We'll try again! Enter an odd integer please: "
+
+        return self.select_board_size(try_again, validator)
