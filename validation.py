@@ -16,10 +16,6 @@ class Validator:
             return False
 
     @staticmethod
-    def is_there_whitespace(string):
-        return len(string.strip()) == len(string)
-
-    @staticmethod
     def is_odd(number):
         return number % 3 == 0
 
