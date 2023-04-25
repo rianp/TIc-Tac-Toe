@@ -50,11 +50,11 @@ class TestValidator(unittest.TestCase):
             self.assertFalse(result)
 
         with self.subTest('returns false when input has leading whitespace'):
-            result = self.validator.is_there_whitespace(" 1")
+            result = self.validator.is_valid_integer(" 1")
             self.assertFalse(result)
 
         with self.subTest('returns false when input has trailing whitespace'):
-            result = self.validator.is_there_whitespace("1 ")
+            result = self.validator.is_valid_integer("1 ")
             self.assertFalse(result)
 
     def test_is_odd(self):

@@ -14,17 +14,17 @@ class TestBoard(unittest.TestCase):
             self.assertEqual(result, expected_result)
 
         with self.subTest('should be pretty when displayed'):
-            expected_output = "************************\n" \
-                              "*    Current Board!    *\n" \
-                              "************************\n" \
-                              "*                      *\n" \
-                              "*    1  |  2  |  3     *\n" \
-                              "*  ------------------  *\n" \
-                              "*    4  |  5  |  6     *\n" \
-                              "*  ------------------  *\n" \
-                              "*    7  |  8  |  9     *\n" \
-                              "*                      *\n" \
-                              "************************"
+            expected_output = (
+                "***********************\n"
+                "*   Current Board!   *\n"
+                "***********************\n"
+                "*    1  |  2  |  3    *\n"
+                "*    -------------    *\n"
+                "*    4  |  5  |  6    *\n"
+                "*    -------------    *\n"
+                "*    7  |  8  |  9    *\n"
+                "***********************\n"
+            )
             self.assertEqual(str(self.test_board), expected_output)
 
     def test_when_getting_board_range(self):
@@ -74,13 +74,13 @@ class TestBoard(unittest.TestCase):
 
 class TestCustomBoard(unittest.TestCase):
     def test_build_board(self):
-        with self.subTest('should build a 5x5 board matching the input number'):
+        with self.subTest('should build a 5x5 board when the selected board size is 5'):
             self.test_board = Board(5)
 
             result = self.test_board.get_size()
             self.assertEqual(result, 25)
 
-        with self.subTest('should build a board with the width matching the input number'):
+        with self.subTest('should build a 7x7 board when the selected board size is 7'):
             self.test_board = Board(7)
 
             result = self.test_board.get_size()

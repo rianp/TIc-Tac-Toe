@@ -14,7 +14,7 @@ class Game:
         players = self.players
         console = self.console
 
-        console.print_string(str(board))
+        console.print_board(board.get_board())
 
         current_player = players.get_current_player()
         name = current_player.get_name()
