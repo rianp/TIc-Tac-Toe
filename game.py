@@ -12,8 +12,7 @@ class Game:
     def play_round(self):
         self.console.print_string(str(self.board))
 
-        console.print_board(board.get_board())
-
+        self.console.print_board(self.board.get_board())
         current_player = self.players.get_current_player()
         name = current_player.get_name()
         current_mark = current_player.get_mark()
