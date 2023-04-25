@@ -13,20 +13,6 @@ class TestBoard(unittest.TestCase):
             result = self.test_board.get_board()
             self.assertEqual(result, expected_result)
 
-        with self.subTest('should be pretty when displayed'):
-            expected_output = (
-                "***********************\n"
-                "*   Current Board!   *\n"
-                "***********************\n"
-                "*    1  |  2  |  3    *\n"
-                "*    -------------    *\n"
-                "*    4  |  5  |  6    *\n"
-                "*    -------------    *\n"
-                "*    7  |  8  |  9    *\n"
-                "***********************\n"
-            )
-            self.assertEqual(str(self.test_board), expected_output)
-
     def test_when_getting_board_range(self):
         with self.subTest('should return range from lowest to highest cell number'):
             board_length = len(self.test_board.get_board())

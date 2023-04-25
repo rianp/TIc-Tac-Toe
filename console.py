@@ -44,59 +44,21 @@ class Console:
         return self.select_board_size(try_again, validator)
 
     def print_board(self, board):
-        formatter = Formatter(board)
-        return formatter.build_layout()
+        return self.print_string(self.format_board(board))
 
-
-class Formatter:
-    def __init__(self, board):
-        self.board = board
-
-    def build_layout(self):
-        size = len(self.board)
-        board = self.build_board_layout(size)
-        width = self.calc_board_width(board)
-        header = self.build_header(width)
-        footer = self.build_footer(width)
-        print(header + board + footer)
-        return header + board + footer
-
-    def build_board_layout(self, size):
+    def format_board(self, board):
         rows = []
-        cells = "  |  ".join(["{}"] * size)
-        max_num_len = len(str(size * size))
+        cells = "  |  ".join(["{}"] * len(board))
+        max_num_len = len(str(len(board) * len(board)))
         padding = " " * 4
 
-        for num in range(size):
-            row_nums = [str(elem).rjust(max_num_len) for elem in self.board[num]]
+        for num in range(len(board)):
+            row_nums = [str(elem).rjust(max_num_len) for elem in board[num]]
             row_str = cells.format(*row_nums)
             rows.append(f"*{padding}{row_str}{padding}*\n")
 
         divider = f"*{padding}{'-' * (len(rows[0]) - 11)}{padding}*\n"
+        title = f"*{'Current Board'.center((len(rows[0]) - 3), ' ')}*\n"
+        border = f"{'*' * (len(rows[0]) - 1)}\n"
 
-        return divider.join(rows)
-
-    def build_header(self, width):
-        title = "Current Board!"
-        padding = " " * (((width - len(title)) // 2) - 1)
-        line = f"{'*' * width}\n"
-
-        return f"{line}*{padding}{title}{padding}*\n{line}"
-
-    def build_footer(self, width):
-        return f"{'*' * width}\n"
-
-    def calc_board_width(self, string):
-        counting = False
-        count = 0
-
-        for char in string:
-            if char == "*":
-                if not counting:
-                    counting = True
-                else:
-                    break
-            elif counting:
-                count += 1
-
-        return count + 2
+        return "".join([border, title, border, divider.join(rows), border])
