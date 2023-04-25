@@ -19,7 +19,7 @@ class Console:
 *           Here are the instructions to the game!           *
 *------------------------------------------------------------*
 * 1. there are two players in the game (X and O)             *
-* 2. a game has nine fields in a 3x3 grid                    *
+* 2. players can choose a 3x3 or a 5x5 board size            *
 * 3. a player can take a field if not already taken          *
 * 4. players take turns taking fields until the game is over *
 * 5. a game is over when:                                    *
