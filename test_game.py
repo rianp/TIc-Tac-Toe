@@ -24,7 +24,7 @@ class TestGame(unittest.TestCase):
         with self.subTest("display current state of the game"):
             self.game.get_move = MagicMock()
             self.game.play_round()
-            self.console.print_string.assert_called_once_with(str(self.board))
+            self.console.print_board.assert_called_once_with(self.board.get_board())
 
         with self.subTest("get current player's move to update the board"):
             self.game.get_move = MagicMock()

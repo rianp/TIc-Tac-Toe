@@ -13,20 +13,6 @@ class TestBoard(unittest.TestCase):
             result = self.test_board.get_board()
             self.assertEqual(result, expected_result)
 
-        with self.subTest('should be pretty when displayed'):
-            expected_output = "************************\n" \
-                              "*    Current Board!    *\n" \
-                              "************************\n" \
-                              "*                      *\n" \
-                              "*    1  |  2  |  3     *\n" \
-                              "*  ------------------  *\n" \
-                              "*    4  |  5  |  6     *\n" \
-                              "*  ------------------  *\n" \
-                              "*    7  |  8  |  9     *\n" \
-                              "*                      *\n" \
-                              "************************"
-            self.assertEqual(str(self.test_board), expected_output)
-
     def test_when_getting_board_range(self):
         with self.subTest('should return range from lowest to highest cell number'):
             board_length = len(self.test_board.get_board())
@@ -70,3 +56,26 @@ class TestBoard(unittest.TestCase):
             self.test_board._board = [['x', 'o', 'x'], ['o', 'o', 'x'], ['o', 'x', 'o']]
             result = self.test_board.get_board_winner_status()
             self.assertEqual(result, WinnerStatus.DRAW)
+
+
+class TestCustomBoard(unittest.TestCase):
+    def test_build_board(self):
+        with self.subTest('should build a 5x5 board when the selected board size is 5'):
+            self.test_board = Board(5)
+
+            result = self.test_board.get_size()
+            self.assertEqual(result, 25)
+
+        with self.subTest('should build a 7x7 board when the selected board size is 7'):
+            self.test_board = Board(7)
+
+            result = self.test_board.get_size()
+            self.assertEqual(result, 49)
+
+        with self.subTest('should build a board with the width matching the input number'):
+            self.test_board = Board(5)
+            expected_board = [[1, 2, 3, 4, 5], [6, 7, 8, 9, 10],
+                              [11, 12, 13, 14, 15], [16, 17, 18, 19, 20], [21, 22, 23, 24, 25]]
+
+            result = self.test_board.get_board()
+            self.assertEqual(result, expected_board)

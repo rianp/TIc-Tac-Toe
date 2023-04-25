@@ -19,7 +19,7 @@ class Console:
 *           Here are the instructions to the game!           *
 *------------------------------------------------------------*
 * 1. there are two players in the game (X and O)             *
-* 2. a game has nine fields in a 3x3 grid                    *
+* 2. players can choose a 3x3 or a 5x5 board size            *
 * 3. a player can take a field if not already taken          *
 * 4. players take turns taking fields until the game is over *
 * 5. a game is over when:                                    *
@@ -42,3 +42,23 @@ class Console:
                     f"\nIt's okay though! We'll try again! Enter an odd integer please: "
 
         return self.select_board_size(try_again, validator)
+
+    def print_board(self, board):
+        return self.print_string(self.format_board(board))
+
+    def format_board(self, board):
+        rows = []
+        cells = "  |  ".join(["{}"] * len(board))
+        max_num_len = len(str(len(board) * len(board)))
+        padding = " " * 4
+
+        for num in range(len(board)):
+            row_nums = [str(elem).rjust(max_num_len) for elem in board[num]]
+            row_str = cells.format(*row_nums)
+            rows.append(f"*{padding}{row_str}{padding}*\n")
+
+        divider = f"*{padding}{'-' * (len(rows[0]) - 11)}{padding}*\n"
+        title = f"*{'Current Board'.center((len(rows[0]) - 3), ' ')}*\n"
+        border = f"{'*' * (len(rows[0]) - 1)}\n"
+
+        return "".join([border, title, border, divider.join(rows), border])
