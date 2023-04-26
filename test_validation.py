@@ -1,4 +1,5 @@
 import unittest
+from parameterized import parameterized
 from validation import Validator
 
 
@@ -116,41 +117,35 @@ class TestValidator(unittest.TestCase):
 class TestCustomBoardValidation(unittest.TestCase):
 
     def setUp(self):
+        self.validator = Validator()
+
+    @parameterized.expand([
+        (2, True),
+        (25, True),
+        (7, False),
+        (13, False),
+    ])
+    def test_is_on_board(self, selection, expected_result):
+        test_board = [[1, 2, 3, 4, 5],
+                      [6, 'o', 8, 9, 10],
+                      [11, 12, 'x', 14, 15],
+                      [16, 'o', 18, 'x', 20],
+                      ['o', 'x', 'o', 'x', 25]]
+        result = self.validator.is_on_board(selection, test_board)
+        self.assertEqual(result, expected_result)
+
+    @parameterized.expand([
+        (1, True),
+        (25, True),
+        (0, False),
+        (26, False),
+    ])
+    def test_is_in_range(self, selection, expected_result):
         self.test_board = [[1, 2, 3, 4, 5],
                            [6, 7, 8, 9, 10],
                            [11, 12, 13, 14, 15],
                            [16, 17, 18, 19, 20],
                            [21, 22, 23, 24, 25]]
-        self.validator = Validator()
-
-    def test_is_on_board(self):
-        test_board = [[1, 2, 3, 4, 5],
-                      [6, 'o', 8, 9, 10],
-                      [11, 12, 'x', 14, 15],
-                      [16, 'o', 18, 'x', 20],
-                      ['o', 'x', 'o', 'x', 'o']]
-        with self.subTest('returns true when selection is available'):
-            result = self.validator.is_on_board(2, test_board)
-            self.assertTrue(result)
-
-        with self.subTest('returns false when selection is not available'):
-            result = self.validator.is_on_board(25, test_board)
-            self.assertFalse(result)
-
-    def test_is_in_range(self):
         board_range = range(1, len(self.test_board) * len(self.test_board[0]) + 1)
-        with self.subTest('returns true when selection is at minimum selection range'):
-            result = self.validator.is_in_range(1, board_range)
-            self.assertTrue(result)
-
-        with self.subTest('returns true when selection is at maximum selection range'):
-            result = self.validator.is_in_range(25, board_range)
-            self.assertTrue(result)
-
-        with self.subTest('returns false when selection is lower than selection range'):
-            result = self.validator.is_in_range(0, board_range)
-            self.assertFalse(result)
-
-        with self.subTest('returns false when selection is higher than selection range'):
-            result = self.validator.is_in_range(26, board_range)
-            self.assertFalse(result)
+        result = self.validator.is_in_range(selection, board_range)
+        self.assertEqual(result, expected_result)

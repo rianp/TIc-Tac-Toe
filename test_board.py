@@ -84,7 +84,7 @@ class TestCustomBoard(unittest.TestCase):
             self.assertEqual(result, expected_board)
 
     def test_when_updating_board(self):
-        with self.subTest("should place player's mark on desired cell"):
+        with self.subTest("should place player's mark on desired cell on a custom sized board"):
             self.test_board = Board(5)
             self.test_board.update_board("x", 1)
             expected_output = [["x", 2, 3, 4, 5],
@@ -105,7 +105,7 @@ class TestCustomBoard(unittest.TestCase):
             result = self.test_board.get_board_winner_status()
             self.assertEqual(result, WinnerStatus.ONGOING)
 
-        with self.subTest('should check the state of the rows'):
+        with self.subTest('should return x as the winner when x updates all cells in a row'):
             self.test_board._board = [['x', 'x', 'x', 'x', 'x'],
                                       [6, 7, 8, 9, 10],
                                       [11, 12, 13, 14, 15],
@@ -114,7 +114,7 @@ class TestCustomBoard(unittest.TestCase):
             result = self.test_board.get_board_winner_status()
             self.assertEqual(result, WinnerStatus.WINNER_X)
 
-        with self.subTest('should check the state of the columns'):
+        with self.subTest('should return x as the winner when x updates all cells in a column'):
             self.test_board._board = [['x', 2, 3, 4, 5],
                                       ['x', 7, 8, 9, 10],
                                       ['x', 12, 13, 14, 15],
@@ -123,7 +123,7 @@ class TestCustomBoard(unittest.TestCase):
             result = self.test_board.get_board_winner_status()
             self.assertEqual(result, WinnerStatus.WINNER_X)
 
-        with self.subTest('should check diagonal descending'):
+        with self.subTest('should return o as the winner when o updates all cells diagonal descending'):
             self.test_board._board = [['o', 2, 3, 4, 5],
                                       [6, 'o', 8, 9, 10],
                                       [11, 12, 'o', 14, 15],
@@ -132,8 +132,8 @@ class TestCustomBoard(unittest.TestCase):
             result = self.test_board.get_board_winner_status()
             self.assertEqual(result, WinnerStatus.WINNER_O)
 
-        with self.subTest('should check diagonal ascending'):
-            self.test_board._board = [['o', 2, 3, 4, 'o'],
+        with self.subTest('should return o as the winner when o updates all cells diagonal ascending'):
+            self.test_board._board = [[1, 2, 3, 4, 'o'],
                                       [6, 7, 8, 'o', 10],
                                       [11, 12, 'o', 14, 15],
                                       [16, 'o', 18, 19, 20],
