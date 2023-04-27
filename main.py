@@ -13,13 +13,9 @@ def setup_game(console, validator):
         "Let's pick your opponent!"
         "\nPress 1 for Human or press 2 for Computer: ", validator.validate_choice)
     if choice == 1:
-        player_1 = Player("1", "x")
-        player_2 = Player("2", "o")
+        players = Players(Player("1", "x"), Player("2", "o"))
     else:
-        player_1 = ComputerPlayer("1", "x")
-        player_2 = Player("2", "o")
-
-    players = Players(player_1, player_2)
+        players = Players(ComputerPlayer("1", "x"), Player("2", "o"))
 
     board_size = console.selector(
         "Let's build a board! Pick an odd number from 1 to 7: ", validator.validate_size)
