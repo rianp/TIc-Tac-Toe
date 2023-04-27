@@ -38,7 +38,7 @@ class TestConsole(unittest.TestCase):
         validated_size_mock.message = "wrong num"
         self.validator.validate_size = Mock(return_value=validated_size_mock)
 
-        size = self.console.select_board_size(prompt, self.validator)
+        size = self.console.selector(prompt,  self.validator.validate_size)
 
         with self.subTest('should prompt user for board size'):
             self.console.prompt_input.assert_called_once_with(prompt)
@@ -109,17 +109,17 @@ class TestConsole(unittest.TestCase):
 
     def test_select_opponent(self):
         prompt = "enter a number: "
-        self.console.prompt_input = Mock(return_value='3')
+        self.console.prompt_input = Mock(return_value='2')
         validated_opponent_choice_mock = Mock()
         validated_opponent_choice_mock.is_valid = True
         validated_opponent_choice_mock.message = "wrong num"
-        self.validator.validate_size = Mock(return_value=validated_opponent_choice_mock)
+        self.validator.validate_choice = Mock(return_value=validated_opponent_choice_mock)
 
-        opponent = self.console.select_opponent(prompt, self.validator)
+        opponent = self.console.selector(prompt, self.validator.validate_choice)
 
         with self.subTest('should prompt user for opponent choice'):
             self.console.prompt_input.assert_called_once_with(prompt)
         with self.subTest('should validate the choice'):
-            self.validator.validate_size.assert_called_once_with('3')
+            self.validator.validate_choice.assert_called_once_with('2')
         with self.subTest("should return the opponent choice if it's a valid choice"):
-            self.assertEqual(opponent, 3)
+            self.assertEqual(opponent, 2)

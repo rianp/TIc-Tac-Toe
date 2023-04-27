@@ -31,17 +31,17 @@ class Console:
         """
                                )
 
-    def select_board_size(self, prompt, validator):
-        size = self.prompt_input(prompt)
-        validated_size = validator.validate_size(size)
+    def selector(self, prompt, validator):
+        choice = self.prompt_input(prompt)
+        validated_choice = validator(choice)
 
-        if validated_size.is_valid is True:
-            return int(size)
+        if validated_choice.is_valid is True:
+            return int(choice)
 
-        try_again = f"{validated_size.message}" \
-                    f"\nIt's okay though! We'll try again! Enter an odd integer please: "
+        try_again = f"{validated_choice.message}" \
+                    f"\nIt's okay though! We'll try again! Make a selection please: "
 
-        return self.select_board_size(try_again, validator)
+        return self.selector(try_again, validator)
 
     def print_board(self, board):
         return self.print_string(self.format_board(board))

@@ -16,8 +16,10 @@ def main():
 
     console.print_greeting()
     console.print_instructions()
-    board_size = console.select_board_size(
-        "Let's build a board! Pick an odd number from 1 to 7: ", validator)
+    opponent = console.selector(
+        "First let's pick your opponent! \nPress 1 for Human or press 2 for Computer: ", validator.validate_choice)
+    board_size = console.selector(
+        "Let's build a board! Pick an odd number from 1 to 7: ", validator.validate_size)
     board = Board(board_size)
 
     game = Game(board, players, console, validator)
