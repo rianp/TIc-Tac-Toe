@@ -8,3 +8,8 @@ class Player:
 
     def get_mark(self):
         return self._mark
+
+
+class ComputerPlayer:
+    def __init__(self, name, mark):
+        self.player = Player(name, mark)
