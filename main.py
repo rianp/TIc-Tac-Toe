@@ -1,12 +1,12 @@
 from validation import Validator
 from console import Console
-from setup_game import SetUp
+from setup_game import SetUpGame
 
 
 def main():
     console = Console()
 
-    game = SetUp(console, Validator()).setup_game()
+    game = SetUpGame(console, Validator()).setup_game()
     end_game_message = game.play_round()
 
     console.print_string(end_game_message)

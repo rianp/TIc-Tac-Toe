@@ -31,7 +31,7 @@ class Validator:
 
         return ValidationResult(True, "")
 
-    def validate_choice(self, choice):
+    def validate_menu_choice(self, choice):
         if not self.is_valid_integer(choice):
             return ValidationResult(False, "Eek! That's not even a number! ")
 

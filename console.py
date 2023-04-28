@@ -31,7 +31,7 @@ class Console:
         """
                                )
 
-    def selector(self, prompt, validator):
+    def get_integer_input(self, prompt, validator):
         choice = self.prompt_input(prompt)
         validated_choice = validator(choice)
 
@@ -41,7 +41,7 @@ class Console:
         try_again = f"{validated_choice.message}" \
                     f"\nIt's okay though! We'll try again! Make a selection please: "
 
-        return self.selector(try_again, validator)
+        return self.get_integer_input(try_again, validator)
 
     def print_board(self, board):
         return self.print_string(self.format_board(board))

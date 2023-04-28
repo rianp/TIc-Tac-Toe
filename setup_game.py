@@ -23,15 +23,16 @@ class SetUpGame:
         self.console.print_instructions()
 
     def create_players(self):
-        choice = self.console.selector(
+        choice = self.console.get_integer_input(
             "Let's pick your opponent!"
-            "\nPress 1 for Human or press 2 for Computer: ", self.validator.validate_choice)
+            "\nPress 1 for Human or press 2 for Computer: ", self.validator.validate_menu_choice)
+
         if choice == 1:
             return Players(Player("1", "x"), Player("2", "o"))
-        else:
-            return Players(ComputerPlayer("1", "x"), Player("2", "o"))
+
+        return Players(ComputerPlayer("Bot", "x"), Player("2", "o"))
 
     def create_board(self):
-        board_size = self.console.selector(
+        board_size = self.console.get_integer_input(
             "Let's build a board! Pick an odd number from 1 to 7: ", self.validator.validate_size)
         return Board(board_size)
