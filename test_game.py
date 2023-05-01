@@ -43,13 +43,6 @@ class TestGame(unittest.TestCase):
             result = self.game.play_round()
             self.assertEqual(result, expected_output)
 
-        with self.subTest("return game over message when game is over"):
-            current_player.get_name.return_value = '1'
-            self.board.get_board_winner_status.return_value = True
-            expected_output = "OMG! Congratulations Player 1, You won!"
-            result = self.game.play_round()
-            self.assertEqual(result, expected_output)
-
         with self.subTest("doesn't display a message if the game isn't over"):
             self.board.get_board_winner_status = \
                 Mock(side_effect=[WinnerStatus.ONGOING, WinnerStatus.DRAW])
@@ -142,6 +135,68 @@ class TestGame(unittest.TestCase):
         player_mock = MagicMock()
         player_mock.get_name.return_value = '1'
         expected_output = '1'
+        self.players.get_current_player.return_value = player_mock
+
+        actual_output = self.game.get_winner()
+
+        with self.subTest('should change player turn'):
+            self.players.change_turn.assert_called_once()
+        with self.subTest('should return winner'):
+            self.assertEqual(actual_output, expected_output)
+
+
+class TestComputerOpponentGame(unittest.TestCase):
+
+    def setUp(self):
+        player_1 = ("Bot", "x")
+        player_2 = ("2", "o")
+        self.players = MagicMock(return_value=(player_1, player_2))
+        self.board = MagicMock()
+        self.console = MagicMock()
+        self.validator = MagicMock()
+        self.game = Game(self.board, self.players, self.console, self.validator)
+
+    def test_play_round(self):
+        current_player = self.players.get_current_player.return_value\
+            = MagicMock(name='Bot', mark='x')
+
+        with self.subTest("should get computer's move to update the board"):
+            current_player.get_name.return_value = 'Bot'
+            self.game.board.get_board = MagicMock()
+            self.game.current_player = MagicMock()
+            current_player.make_move.return_value = 1
+
+            self.game.play_round()
+
+            current_player.make_move.assert_called_once_with(self.game.board.get_board())
+
+        with self.subTest("update the board with the computer's move "):
+            current_player.get_name.return_value = 'Bot'
+            self.game.update_game = MagicMock()
+            self.game.play_round()
+            self.game.update_game.assert_called()
+
+        with self.subTest("should return game over message when game is over"):
+            current_player.get_name.return_value = 'Bot'
+            self.board.get_board_winner_status.return_value = WinnerStatus.WINNER_X
+            expected_output = "OMG! Congratulations Player Bot, You won!"
+            result = self.game.play_round()
+            self.assertEqual(result, expected_output)
+
+    def test_get_message(self):
+        player_mock = MagicMock()
+        player_mock.get_name.return_value = 'Bot'
+        self.players.get_current_player.return_value = player_mock
+
+        with self.subTest('should return winner message when the game is won'):
+            expected_output = "OMG! Congratulations Player Bot, You won!"
+            actual_output = self.game.get_message(WinnerStatus.WINNER_X)
+            self.assertEqual(actual_output, expected_output)
+
+    def test_get_winner(self):
+        player_mock = MagicMock()
+        player_mock.get_name.return_value = 'Bot'
+        expected_output = 'Bot'
         self.players.get_current_player.return_value = player_mock
 
         actual_output = self.game.get_winner()

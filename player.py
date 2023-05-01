@@ -19,3 +19,10 @@ class ComputerPlayer:
 
     def get_mark(self):
         return self.player.get_mark()
+
+    def make_move(self, board):
+        for row in board:
+            for cell in row:
+                if isinstance(cell, int):
+                    return cell
+        return 0

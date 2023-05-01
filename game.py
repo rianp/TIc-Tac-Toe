@@ -17,8 +17,11 @@ class Game:
         name = current_player.get_name()
         current_mark = current_player.get_mark()
 
-        move_prompt = f'\nHi Player {name}! Enter a value please: '
-        move = self.get_move(move_prompt)
+        if name == "Bot":
+            move = current_player.make_move(self.board.get_board())
+        else:
+            move_prompt = f'\nHi Player {name}! Enter a value please: '
+            move = self.get_move(move_prompt)
 
         self.update_game(current_mark, move)
 
