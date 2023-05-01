@@ -34,20 +34,34 @@ class TestComputerPlayer(unittest.TestCase):
             self.assertEqual(result, expected_output)
 
     def test_make_move(self):
-        with self.subTest(
-                'computer should pick first available cell when no moves have been played'):
-            board = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-            expected_output = 1
+        test_cases = [
+            {
+                "name": "no moves played",
+                "board": [[1, 2, 3], [4, 5, 6], [7, 8, 9]],
+                "expected_output": 1
+            },
+            {
+                "name": "one move played",
+                "board": [["x", 2, 3], [4, 5, 6], [7, 8, 9]],
+                "expected_output": 2
+            },
+            {
+                "name": "two moves played",
+                "board": [["x", "o", 3], [4, 5, 6], [7, 8, 9]],
+                "expected_output": 3
+            },
+            {
+                "name": "all but one moves played",
+                "board": [["x", "o", "x"], ["x", "o", "x"], ["o", "x", 9]],
+                "expected_output": 9
+            }
+        ]
 
-            result = self.player.make_move(board)
+        for test_case in test_cases:
+            with self.subTest(test_case["name"]):
+                board = test_case["board"]
+                expected_output = test_case["expected_output"]
 
-            self.assertEqual(result, expected_output)
+                result = self.player.make_move(board)
 
-        with self.subTest(
-                'computer should pick first available cell when moves have been played'):
-            board = [['x', 2, 3], [4, 5, 6], [7, 8, 9]]
-            expected_output = 2
-
-            result = self.player.make_move(board)
-
-            self.assertEqual(result, expected_output)
+                self.assertEqual(result, expected_output)
