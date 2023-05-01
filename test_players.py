@@ -3,7 +3,6 @@ from players import Players
 
 
 class TestPlayers(unittest.TestCase):
-
     def test_init(self):
         players = Players("Player 1", "Player 2")
         self.assertEqual(players.get_players(), ("Player 1", "Player 2"))

@@ -113,6 +113,44 @@ class TestValidator(unittest.TestCase):
             self.assertEqual(result.is_valid, True)
             self.assertEqual(result.message, "")
 
+    def test_validate_menu_choice(self):
+        with self.subTest(
+                "should notify player their result is invalid if they entered a non-integer"
+        ):
+            size = "cookie"
+            self.validator.is_valid_integer.return_value = False
+
+            result = self.validator.validate_menu_choice(size)
+
+            self.assertEqual(result.is_valid, False)
+            self.assertEqual(result.message, "Eek! That's not even a number! ")
+
+        with self.subTest(
+                "should notify player of out-of-range choice "
+                "if opponent choice is out of selectable range"
+        ):
+            size = "3"
+            self.validator.is_valid_integer.return_value = True
+            self.validator.is_in_range.return_value = False
+
+            result = self.validator.validate_menu_choice(size)
+
+            self.assertEqual(result.is_valid, False)
+            self.assertEqual(result.message, "Whoa friend! This is outta bounds! ")
+
+        with self.subTest(
+                "should indicate result is valid if chosen opponent is a valid choice"
+        ):
+            size = "2"
+            self.validator.is_valid_integer.return_value = True
+            self.validator.is_in_range.return_value = True
+            self.validator.is_odd.return_value = True
+
+            result = self.validator.validate_menu_choice(size)
+
+            self.assertEqual(result.is_valid, True)
+            self.assertEqual(result.message, "")
+
 
 class TestCustomBoardValidation(unittest.TestCase):
 

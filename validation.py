@@ -23,13 +23,20 @@ class Validator:
         if not self.is_valid_integer(size):
             return ValidationResult(False, "Eek! That's not even a number! ")
 
-        size = int(size)
-
-        if not self.is_in_range(size, range(3, 6)):
+        if not self.is_in_range(int(size), range(3, 6)):
             return ValidationResult(False, "Whoa friend! This is outta bounds! ")
 
-        if not self.is_odd(size):
+        if not self.is_odd(int(size)):
             return ValidationResult(False, "Ummm. This isn't odd friend!")
+
+        return ValidationResult(True, "")
+
+    def validate_menu_choice(self, choice):
+        if not self.is_valid_integer(choice):
+            return ValidationResult(False, "Eek! That's not even a number! ")
+
+        if not self.is_in_range(int(choice), range(1, 3)):
+            return ValidationResult(False, "Whoa friend! This is outta bounds! ")
 
         return ValidationResult(True, "")
 

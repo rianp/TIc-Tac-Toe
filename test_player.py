@@ -1,5 +1,5 @@
 import unittest
-from player import Player
+from player import Player, ComputerPlayer
 
 
 class TestPlayer(unittest.TestCase):
@@ -17,4 +17,17 @@ class TestPlayer(unittest.TestCase):
             result = player.get_mark()
             self.assertEqual(result, expected_output)
 
-    # need to write tests checking for no name or mark given
+
+class TestComputerPlayer(unittest.TestCase):
+    def test_computer_player(self):
+        with self.subTest('has name'):
+            player = ComputerPlayer("1", "x")
+            expected_output = "1"
+            result = player.get_name()
+            self.assertEqual(result, expected_output)
+
+        with self.subTest('has mark'):
+            player = ComputerPlayer("1", "x")
+            expected_output = "x"
+            result = player.get_mark()
+            self.assertEqual(result, expected_output)
