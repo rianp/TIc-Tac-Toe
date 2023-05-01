@@ -51,6 +51,16 @@ class TestComputerPlayer(unittest.TestCase):
                 "expected_output": 3
             },
             {
+                "name": "multiple out of order moves played",
+                "board": [["x", 2, "o"], ["o", 5, "x"], [7, "x", 9]],
+                "expected_output": 2
+            },
+            {
+                "name": "multiple out of order moves played",
+                "board": [["x", "x", "o"], ["o", 5, "x"], [7, "x", 9]],
+                "expected_output": 5
+            },
+            {
                 "name": "all but one moves played",
                 "board": [["x", "o", "x"], ["x", "o", "x"], ["o", "x", 9]],
                 "expected_output": 9
