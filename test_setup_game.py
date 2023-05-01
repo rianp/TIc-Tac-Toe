@@ -40,6 +40,7 @@ class TestSetUpGame(unittest.TestCase):
             self.console.get_integer_input.assert_called_with(
                 "Let's pick your opponent!\nPress 1 for Human or press 2 for Computer: ",
                 self.validator.validate_menu_choice)
+
         with self.subTest(
                 'should set the players to human vs human if human is selected as opponent'):
             self.console.get_integer_input.return_value = 1
@@ -47,6 +48,7 @@ class TestSetUpGame(unittest.TestCase):
             expected_players = Players(ComputerPlayer("1", "x"), Player("2", "o"))
             self.assertEqual(
                 players.get_players()[0].get_name(), expected_players.get_players()[0].get_name())
+
         with self.subTest(
                 'should set the players to computer vs human if computer is selected as opponent'):
             self.console.get_integer_input.return_value = 2
