@@ -1,5 +1,5 @@
 import unittest
-from player import Player, ComputerPlayer
+from player import Player, ComputerPlayer, SuperComputerPlayer
 
 
 class TestPlayer(unittest.TestCase):
@@ -75,3 +75,19 @@ class TestComputerPlayer(unittest.TestCase):
                 result = self.player.make_move(board)
 
                 self.assertEqual(result, expected_output)
+
+
+class TestSuperComputerPlayer(unittest.TestCase):
+    def setUp(self):
+        self.player = SuperComputerPlayer("Super Bot", "x")
+
+    def test_computer_player(self):
+        with self.subTest('has name'):
+            expected_output = "Super Bot"
+            result = self.player.get_name()
+            self.assertEqual(result, expected_output)
+
+        with self.subTest('has mark'):
+            expected_output = "x"
+            result = self.player.get_mark()
+            self.assertEqual(result, expected_output)

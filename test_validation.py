@@ -129,7 +129,7 @@ class TestValidator(unittest.TestCase):
                 "should notify player of out-of-range choice "
                 "if opponent choice is out of selectable range"
         ):
-            size = "3"
+            size = "4"
             self.validator.is_valid_integer.return_value = True
             self.validator.is_in_range.return_value = False
 

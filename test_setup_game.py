@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import Mock, patch
-from setup_game import SetUpGame, Player, Players, ComputerPlayer
+from setup_game import SetUpGame, Player, Players, ComputerPlayer, SuperComputerPlayer
 
 
 class TestSetUpGame(unittest.TestCase):
@@ -38,7 +38,10 @@ class TestSetUpGame(unittest.TestCase):
 
         with self.subTest('should ask user for opponent choice when game starts'):
             self.console.get_integer_input.assert_called_with(
-                "Let's pick your opponent!\nPress 1 for Human or press 2 for Computer: ",
+                "Let's pick your opponent!"
+                "\nPress 1 for Human, "
+                "press 2 for Easy Peasy Computer, "
+                "or press 3 for Extremely Difficult Computer: ",
                 self.validator.validate_menu_choice)
 
         with self.subTest(
@@ -54,6 +57,14 @@ class TestSetUpGame(unittest.TestCase):
             self.console.get_integer_input.return_value = 2
             players = self.setup_game.create_players()
             expected_players = Players(ComputerPlayer("Bot", "x"), Player("2", "o"))
+            self.assertEqual(
+                players.get_players()[0].get_name(), expected_players.get_players()[0].get_name())
+
+        with self.subTest(
+                'should set the players to computer vs human if computer is selected as opponent'):
+            self.console.get_integer_input.return_value = 3
+            players = self.setup_game.create_players()
+            expected_players = Players(SuperComputerPlayer("Super Bot", "x"), Player("2", "o"))
             self.assertEqual(
                 players.get_players()[0].get_name(), expected_players.get_players()[0].get_name())
 

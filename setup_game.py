@@ -1,6 +1,6 @@
 from game import Game
 from board import Board
-from player import Player, ComputerPlayer
+from player import Player, ComputerPlayer, SuperComputerPlayer
 from players import Players
 
 
@@ -25,12 +25,17 @@ class SetUpGame:
     def create_players(self):
         choice = self.console.get_integer_input(
             "Let's pick your opponent!"
-            "\nPress 1 for Human or press 2 for Computer: ", self.validator.validate_menu_choice)
+            "\nPress 1 for Human, "
+            "press 2 for Easy Peasy Computer, "
+            "or press 3 for Extremely Difficult Computer: ", self.validator.validate_menu_choice)
 
         if choice == 1:
             return Players(Player("1", "x"), Player("2", "o"))
 
-        return Players(ComputerPlayer("Bot", "x"), Player("2", "o"))
+        if choice == 2:
+            return Players(ComputerPlayer("Bot", "x"), Player("2", "o"))
+
+        return Players(SuperComputerPlayer("Super Bot", "x"), Player("2", "o"))
 
     def create_board(self):
         board_size = self.console.get_integer_input(
