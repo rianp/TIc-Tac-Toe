@@ -39,5 +39,6 @@ class SetUpGame:
 
     def create_board(self):
         board_size = self.console.get_integer_input(
-            "Let's build a board! Enter a board size of either 3 or 5: ", self.validator.validate_size)
+            "Let's build a board! Enter a board size of either 3 or 5: ",
+            self.validator.validate_size)
         return Board(board_size)
