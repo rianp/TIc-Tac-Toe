@@ -26,3 +26,14 @@ class ComputerPlayer:
                 if isinstance(cell, int):
                     return cell
         return 0
+
+
+class SuperComputerPlayer:
+    def __init__(self, name, mark):
+        self.player = Player(name, mark)
+
+    def get_name(self):
+        return self.player.get_name()
+
+    def get_mark(self):
+        return self.player.get_mark()

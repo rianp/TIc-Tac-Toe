@@ -35,7 +35,7 @@ class Validator:
         if not self.is_valid_integer(choice):
             return ValidationResult(False, "Eek! That's not even a number! ")
 
-        if not self.is_in_range(int(choice), range(1, 3)):
+        if not self.is_in_range(int(choice), range(1, 4)):
             return ValidationResult(False, "Whoa friend! This is outta bounds! ")
 
         return ValidationResult(True, "")

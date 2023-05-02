@@ -129,7 +129,7 @@ class TestValidator(unittest.TestCase):
                 "should notify player of out-of-range choice "
                 "if opponent choice is out of selectable range"
         ):
-            size = "3"
+            size = "4"
             self.validator.is_valid_integer.return_value = True
             self.validator.is_in_range.return_value = False
 
@@ -179,11 +179,11 @@ class TestCustomBoardValidation(unittest.TestCase):
         (26, False),
     ])
     def test_is_in_range(self, selection, expected_result):
-        self.test_board = [[1, 2, 3, 4, 5],
-                           [6, 7, 8, 9, 10],
-                           [11, 12, 13, 14, 15],
-                           [16, 17, 18, 19, 20],
-                           [21, 22, 23, 24, 25]]
-        board_range = range(1, len(self.test_board) * len(self.test_board[0]) + 1)
+        test_board = [[1, 2, 3, 4, 5],
+                      [6, 7, 8, 9, 10],
+                      [11, 12, 13, 14, 15],
+                      [16, 17, 18, 19, 20],
+                      [21, 22, 23, 24, 25]]
+        board_range = range(1, len(test_board) * len(test_board[0]) + 1)
         result = self.validator.is_in_range(selection, board_range)
         self.assertEqual(result, expected_result)
