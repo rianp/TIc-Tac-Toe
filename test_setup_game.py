@@ -61,7 +61,7 @@ class TestSetUpGame(unittest.TestCase):
                 players.get_players()[0].get_name(), expected_players.get_players()[0].get_name())
 
         with self.subTest(
-                'should set the players to computer vs human if computer is selected as opponent'):
+                'should set the players to super computer vs human if super computer is selected as opponent'):
             self.console.get_integer_input.return_value = 3
             players = self.setup_game.create_players()
             expected_players = Players(SuperComputerPlayer("Super Bot", "x"), Player("2", "o"))
