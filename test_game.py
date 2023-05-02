@@ -157,16 +157,26 @@ class TestComputerOpponentGame(unittest.TestCase):
         self.game = Game(self.board, self.players, self.console, self.validator)
 
     def test_play_round(self):
-        current_player = self.players.get_current_player.return_value\
-            = MagicMock(name='Bot', mark='x')
+        with self.subTest("should tell the user the computer is making its move"):
+            game = Game(self.board, self.players, self.console, self.validator)
+            current_player = self.players.get_current_player.return_value \
+                = MagicMock(name='Bot', mark='x')
+            current_player.get_name.return_value = 'Bot'
+
+            game.play_round()
+
+            message = "Watch in awe as Player Bot makes a really impressive move!"
+            self.console.print_string.assert_called_once_with(message)
 
         with self.subTest("should get computer's move to update the board"):
+            game = Game(self.board, self.players, self.console, self.validator)
+            current_player = self.players.get_current_player.return_value \
+                = MagicMock(name='Bot', mark='x')
             current_player.get_name.return_value = 'Bot'
             self.game.board.get_board = MagicMock()
-            self.game.current_player = MagicMock()
             current_player.make_move.return_value = 1
 
-            self.game.play_round()
+            game.play_round()
 
             current_player.make_move.assert_called_once_with(self.game.board.get_board())
 
