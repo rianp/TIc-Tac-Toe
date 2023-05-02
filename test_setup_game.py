@@ -64,5 +64,5 @@ class TestSetUpGame(unittest.TestCase):
 
         with self.subTest('should create board with the size the user chooses'):
             self.console.get_integer_input.assert_called_with(
-                "Let's build a board! Pick an odd number from 1 to 7: ",
+                "Let's build a board! Enter a board size of either 3 or 5: ",
                 self.validator.validate_size)
