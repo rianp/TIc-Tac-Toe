@@ -41,22 +41,32 @@ class SuperComputerPlayer:
         return self.player.get_mark()
 
     def make_move(self, board):
-        best_value = -1000
-        best_move = (-1, -1)
+        best_weight = -1000
+        best_position = (-1, -1)
+
+        if self.is_no_moves_made(board):
+            return board[len(board) % 2][len(board) % 2]
 
         for row in range(len(board)):
             for col in range(len(board)):
                 save_num = board[row][col]
                 if isinstance(board[row][col], int):
-                    board[row][col] = "x"
-                    move_value = self.minimax(board, 0, False)
+                    board[row][col] = self.get_mark()
+                    position_weight = self.minimax(board, 0, False)
                     board[row][col] = save_num
 
-                    if move_value > best_value:
-                        best_move = (row, col)
-                        best_value = move_value
+                    if position_weight > best_weight:
+                        best_position = (row, col)
+                        best_weight = position_weight
 
-        return board[best_move[0]][best_move[1]]
+        return board[best_position[0]][best_position[1]]
+
+    def is_no_moves_made(self, board):
+        for row in range(len(board)):
+            for col in range(len(board)):
+                if not isinstance(board[row][col], int):
+                    return False
+        return True
 
     def is_moves_left(self, board):
         for row in range(len(board)):
@@ -66,7 +76,7 @@ class SuperComputerPlayer:
         return False
 
     def evaluate(self, board):
-        computer_player = self.get_mark
+        computer_player = "x"
         opponent = "o"
         size = len(board)
 
@@ -91,14 +101,14 @@ class SuperComputerPlayer:
                 return -10
 
         if all(board[i][size - i - 1] == board[0][size - 1] for i in range(size)):
-            if board[0][2] == computer_player:
+            if board[0][size - 1] == computer_player:
                 return 10
-            elif board[0][2] == opponent:
+            elif board[0][size - 1] == opponent:
                 return -10
 
         return 0
 
-    def minimax(self, board, depth, is_max):
+    def minimax(self, board, depth, is_ai):
         score = self.evaluate(board)
 
         if score == 10:
@@ -110,14 +120,17 @@ class SuperComputerPlayer:
         if not self.is_moves_left(board):
             return 0
 
-        if is_max:
+        if is_ai:
             best = -1000
             for row in range(len(board)):
                 for col in range(len(board)):
                     if isinstance(board[row][col], int):
                         save_num = board[row][col]
+
                         board[row][col] = 'x'
-                        best = max(best, self.minimax(board, depth + 1, not is_max))
+
+                        best = max(best, self.minimax(board, depth + 1, not is_ai))
+
                         board[row][col] = save_num
             return best
         else:
@@ -127,7 +140,7 @@ class SuperComputerPlayer:
                     if isinstance(board[row][col], int):
                         save_num = board[row][col]
                         board[row][col] = 'o'
-                        best = min(best, self.minimax(board, depth + 1, not is_max))
+                        best = min(best, self.minimax(board, depth + 1, not is_ai))
                         board[row][col] = save_num
             return best
 

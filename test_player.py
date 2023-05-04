@@ -93,21 +93,60 @@ class TestSuperComputerPlayer(unittest.TestCase):
             self.assertEqual(result, expected_output)
 
     def test_make_move(self):
-        test_cases = [{'board': [[1, 2, 3], [4, 5, 6], [7, 8, 9]],
-                       'expected_move': 1},
-                      {'board': [["o", 2, "o"], [4, 5, 6], [7, 8, 9]],
-                       'expected_move': 2},
-                      {'board': [["o", "x", "o"], ["x", "o", "x"], ["x", "o", 9]],
-                       'expected_move': 9},
-                      {'board': [["o", "x", "o"], ["x", "o", "x"], [8, "o", 9]],
-                       'expected_move': 8},
+        test_cases = [{'name': "ai should take middle cell on first move",
+                       'board': [[1, 2, 3], [4, 5, 6], [7, 8, 9]],
+                       'expected_move': 5},
+                      {'name': "ai should take winning diagonal move",
+                       'board': [["x", "o", "x"], [4, 5, "o"], ["x", "o",  9]],
+                       'expected_move': 4},
+                      {'name': "ai should take winning horizontal move",
+                       'board': [["x", "x", 3], [4, 5, "o"], [7, "o", 9]],
+                       'expected_move': 3},
+                      {'name': "ai should take winning vertical move",
+                       'board': [["x", 2, 3], [4, 5, "o"], ["x", "o", 9]],
+                       'expected_move': 4},
+                      {'name': "ai should block opponent's two-move win",
+                       'board': [['x', 2, 3], [4, 'o', 6], [7, 8, 'x']],
+                       'expected_move': 3},
+                      {'name': "ai should block opponent's diagonal win",
+                       'board': [["o", "x", 3], [4, 5, "x"], [7, 8, "o"]],
+                       'expected_move': 5},
+                      {'name': "ai should block opponent's vertical win",
+                       'board': [["o", "x", 3], ["o", 5, "x"], [7, 8, 9]],
+                       'expected_move': 7},
+                      {'name': "ai should block opponent's horizontal win",
+                       'board': [["x", "o", "x"], ["o", 5, "o"], [7, 8, "x"]],
+                       'expected_move': 5},
+                      {'name': "ai should choose the last move available if all but one move is left",
+                       'board': [["o", "x", "o"], ["x", "o", "x"], ["x", "o", 9]],
+                       'expected_move': 9}
                       ]
 
         for test_case in test_cases:
-            with self.subTest(test_case=test_case):
+            with self.subTest(test_case['name']):
                 expected_move = test_case['expected_move']
                 result = self.player.make_move(test_case['board'])
                 self.assertEqual(expected_move, result)
+
+    def test_is_no_moves_made(self):
+        test_cases = [
+            {
+                'name': "should return true for a board with no moves made",
+                'board': [[1, 2, 3], [4, 5, 6], [7, 8, 9]],
+                'expected_result': True
+            },
+            {
+                'name': "should return false for a board with some moves made",
+                'board': [[1, 2, 3], [4, 'x', 6], [7, 8, 9]],
+                'expected_result': False
+            }
+        ]
+
+        for test_case in test_cases:
+            with self.subTest(test_case['name']):
+                board = test_case['board']
+                expected_result = test_case['expected_result']
+                self.assertEqual(self.player.is_no_moves_made(board), expected_result)
 
     def test_is_moves_left(self):
         test_cases = [
@@ -129,51 +168,66 @@ class TestSuperComputerPlayer(unittest.TestCase):
         ]
 
         for test_case in test_cases:
-            with self.subTest(test_case=['name']):
+            with self.subTest(test_case['name']):
                 board = test_case['board']
                 expected_result = test_case['expected_result']
                 self.assertEqual(self.player.is_moves_left(board), expected_result)
 
     def test_evaluate(self):
-        test_cases = [{'board': [['x', 'o', 'o'], ['o', 'x', 'x'], ['x', 8, 9]],
+        test_cases = [{'name': "should return 10 if computer wins",
+                       'board': [['x', 'x', 'x'], ['o', 'x', 'x'], ['x', 8, 9]],
                        'expected_result': 10},
-                      {'board': [['o', 'x', 'x'], ['x', 'o', 'o'], [7, 'x', 9]],
+                      {'name': "should return -10 if opponent wins",
+                       'board': [['o', 'x', 'x'], ['o', 'o', 'o'], [7, 'x', 9]],
                        'expected_result': -10},
-                      {'board': [['o', 'x', 'o'], ['x', 'x', 'o'], ['o', 'o', 'x']], 
+                      {'name': "should return 0 if it is a draw",
+                       'board': [['o', 'x', 'o'], ['x', 'x', 'o'], ['o', 'o', 'x']],
                        'expected_result': 0}]
 
         for test_case in test_cases:
-            with self.subTest(test_case=test_case):
+            with self.subTest(test_case['name']):
                 expected_result = test_case['expected_result']
                 result = self.player.evaluate(test_case['board'])
                 self.assertEqual(result, expected_result)
 
-    def test_minimax_cases(self):
+    def test_minimax(self):
         test_cases = [
-            {'board': [['x', 'o', 2], [3, 'o', 5], [6, 'x', 'o']],
+            {'name': "maximizer wins in one move",
+             'board': [[1, 'o', 'x'], ['o', 'x', 6], [8, 9, 'o']],
              'depth': 0,
              'is_max': True,
-             'alpha': -float('inf'),
-             'beta': float('inf'),
-             'expected_result': 10},
-            {'board': [['x', 'o', 'o'], ['o', 'x', 'x'], ['o', 'x', 'o']],
+             'expected_result': 9},
+            {'name': "minimizer wins in one move",
+             'board': [[1, 'o', 'x'], ['x', 'o', 6], [8, 9, 'o']],
              'depth': 0,
              'is_max': False,
-             'alpha': -float('inf'),
-             'beta': float('inf'),
-             'expected_result': -10},
-            {'board': [[0, 'o', 'x'], ['o', 5, 6], ['x', 'o', 'x']],
+             'expected_result': -9},
+            {'name': "maximizer blocks minimizer's two-move win",
+             'board': [[1, 'o', 'x'], ['x', 'o', 6], [8, 9, 'x']],
              'depth': 0,
              'is_max': True,
-             'alpha': -float('inf'),
-             'beta': float('inf'),
-             'expected_result': 0},
+             'expected_result': 9},
+            {'name': "minimizer blocks maximizer's two-move win",
+             'board': [[1, 'o', 'x'], ['x', 'o', 6], [8, 'o', 'x']],
+             'depth': 0,
+             'is_max': False,
+             'expected_result': -10},
+            {'name': "maximizer wins in three moves",
+             'board': [['x', 'o', 'x'], [4, 5, 6], [7, 'x', 'o']],
+             'depth': 0,
+             'is_max': True,
+             'expected_result': 7},
+            {'name': "minimizer wins in three moves",
+             'board': [[1, 2, 'o'], [4, 5, 6], ['x', 'x', 'o']],
+             'depth': 0,
+             'is_max': True,
+             'expected_result': -6}
         ]
 
         for test_case in test_cases:
-            with self.subTest(test_case=test_case):
+            with self.subTest(test_case['name']):
                 result = self.player.minimax(test_case['board'],
-                                            test_case['depth'],
-                                            test_case['is_max'])
+                                             test_case['depth'],
+                                             test_case['is_max'])
                 expected_result = test_case['expected_result']
                 self.assertEqual(result, expected_result)
