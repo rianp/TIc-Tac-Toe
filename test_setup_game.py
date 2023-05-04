@@ -76,19 +76,22 @@ class TestSetUpGame(unittest.TestCase):
         self.validator.validate_size.return_value = 3
         self.console.get_integer_input.return_value = 3
 
-        with self.subTest('should create board with the size the user chooses when opponent is human'):
+        with self.subTest(
+                'should create board with the size the user chooses when opponent is human'):
             self.setup_game.create_board("1")
             self.console.get_integer_input.assert_called_with(
                 "Let's build a board! Enter a board size of either 3 or 5: ",
                 self.validator.validate_size)
 
-        with self.subTest('should create board with the size the user chooses when opponent is Bot'):
+        with self.subTest(
+                'should create board with the size the user chooses when opponent is Bot'):
             self.setup_game.create_board("Bot")
             self.console.get_integer_input.assert_called_with(
                 "Let's build a board! Enter a board size of either 3 or 5: ",
                 self.validator.validate_size)
 
-        with self.subTest('should automatically create a 3x3 board when opponent is Super Bot'):
+        with self.subTest(
+                'should automatically create a 3x3 board when opponent is Super Bot'):
             board = self.setup_game.create_board("Super Bot")
             self.assertIsInstance(board, Board)
             self.assertEqual(len(board.get_board()), 3)
