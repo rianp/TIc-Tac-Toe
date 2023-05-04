@@ -1,5 +1,3 @@
-from board import WinnerStatus
-
 class Player:
     def __init__(self, name, mark):
         self._name = name

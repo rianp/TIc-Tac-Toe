@@ -12,7 +12,7 @@ class SetUpGame:
     def setup_game(self):
         self.display_instructions()
         players = self.create_players()
-        board = self.create_board()
+        board = self.create_board(players.get_players()[0].get_name())
 
         game = Game(board, players, self.console, self.validator)
 
@@ -37,7 +37,10 @@ class SetUpGame:
 
         return Players(SuperComputerPlayer("Super Bot", "x"), Player("2", "o"))
 
-    def create_board(self):
+    def create_board(self, player1_name):
+        if player1_name == "Super Bot":
+            return Board(3)
+
         board_size = self.console.get_integer_input(
             "Let's build a board! Enter a board size of either 3 or 5: ",
             self.validator.validate_size)
