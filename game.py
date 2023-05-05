@@ -18,6 +18,9 @@ class Game:
         if name == "Bot":
             self.console.print_string("Watch in awe as Player Bot makes a really impressive move!")
             move = current_player.make_move(self.board.get_board())
+        elif name == "Super Bot":
+            self.console.print_string("Watch in awe as Super Player Bot makes a really impressive move!")
+            move = current_player.make_move(self.board.get_board())
         else:
             move_prompt = f'\nHi Player {name}! Enter a value please: '
             move = self.get_move(move_prompt)

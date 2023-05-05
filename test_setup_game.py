@@ -1,18 +1,22 @@
 import unittest
 from unittest.mock import Mock, patch
 from setup_game import SetUpGame, Player, Players, ComputerPlayer, SuperComputerPlayer
+from board import Board
 
 
 class TestSetUpGame(unittest.TestCase):
     def setUp(self):
         self.console = Mock()
         self.validator = Mock()
+        self.player = Mock()
         self.players = Mock()
         self.board = Mock()
         self.setup_game = SetUpGame(self.console, self.validator)
 
     @patch('setup_game.Game')
     def test_setup_game(self, game):
+        self.player.get_name.return_value = 'Player 1'
+        self.players.get_players.return_value = [self.player]
         self.setup_game.display_instructions = Mock()
         self.setup_game.create_players = Mock(return_value=self.players)
         self.setup_game.create_board = Mock(return_value=self.board)
@@ -24,7 +28,7 @@ class TestSetUpGame(unittest.TestCase):
         with self.subTest('should create players when the game is setting up'):
             self.setup_game.create_players.assert_called_once()
         with self.subTest('should create a board when the game is setting up'):
-            self.setup_game.create_board.assert_called_once()
+            self.setup_game.create_board.assert_called_once_with('Player 1')
         with self.subTest('should set up the game with the created board and players'):
             game.assert_called_once_with(self.board, self.players, self.console, self.validator)
 
@@ -71,9 +75,23 @@ class TestSetUpGame(unittest.TestCase):
     def test_create_board(self):
         self.validator.validate_size.return_value = 3
         self.console.get_integer_input.return_value = 3
-        self.setup_game.create_board()
 
-        with self.subTest('should create board with the size the user chooses'):
+        with self.subTest(
+                'should create board with the size the user chooses when opponent is human'):
+            self.setup_game.create_board("1")
             self.console.get_integer_input.assert_called_with(
                 "Let's build a board! Enter a board size of either 3 or 5: ",
                 self.validator.validate_size)
+
+        with self.subTest(
+                'should create board with the size the user chooses when opponent is Bot'):
+            self.setup_game.create_board("Bot")
+            self.console.get_integer_input.assert_called_with(
+                "Let's build a board! Enter a board size of either 3 or 5: ",
+                self.validator.validate_size)
+
+        with self.subTest(
+                'should automatically create a 3x3 board when opponent is Super Bot'):
+            board = self.setup_game.create_board("Super Bot")
+            self.assertIsInstance(board, Board)
+            self.assertEqual(len(board.get_board()), 3)
